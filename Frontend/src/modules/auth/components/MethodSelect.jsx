@@ -1,4 +1,13 @@
+import { useState } from 'react'
+
 export default function MethodSelect({ onSelect }) {
+    const [showGoogleToast, setShowGoogleToast] = useState(false)
+
+    function handleGoogle() {
+        setShowGoogleToast(true)
+        setTimeout(() => setShowGoogleToast(false), 3000)
+    }
+
     return (
         <div className="w-full max-w-md px-2">
 
@@ -12,7 +21,7 @@ export default function MethodSelect({ onSelect }) {
                 <img
                     src="/WORDLOGON.png"
                     alt="Vower"
-                    className="h-28 w-auto object-contain -mt-6 relative z-0"
+                    className="h-28 w-auto object-contain -mt-6 relative z-0 scale-150"
                 />
                 <p className="-mt-7 text-sm font-medium tracking-wide text-volt-deep/50 uppercase">
                     Powering Every Promise
@@ -81,7 +90,7 @@ export default function MethodSelect({ onSelect }) {
                 {/* Sign up with Google */}
                 <button
                     type="button"
-                    onClick={() => onSelect('google')}
+                    onClick={handleGoogle}
                     className="flex w-full items-center gap-4 rounded-2xl border border-volt-deep/10 bg-white px-5 py-4 text-base font-medium text-volt-deep shadow-sm shadow-black/5 transition active:scale-[0.97] hover:border-volt-deep/20 hover:bg-gray-50"
                 >
                     <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-volt-deep/5">
@@ -98,6 +107,13 @@ export default function MethodSelect({ onSelect }) {
                     </svg>
                 </button>
             </div>
+
+            {/* Google coming soon toast */}
+            {showGoogleToast && (
+                <div className="mt-4 animate-toastSlide rounded-xl bg-volt-deep/5 border border-volt-deep/10 px-4 py-3 text-center text-sm text-volt-deep/70">
+                    <span className="mr-1.5">🚀</span> Google sign-up is coming soon!
+                </div>
+            )}
 
             {/* Login link */}
             <div className="mt-10 flex items-center justify-center gap-2">

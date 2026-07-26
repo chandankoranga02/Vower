@@ -18,7 +18,7 @@ export default function BrandPanel() {
         <img
           src="/WORDLOGON.png"
           alt="Vower"
-          className="h-24 w-auto object-contain"
+          className="h-24 w-auto object-contain scale-150"
           style={{ filter: 'invert(1) contrast(2) brightness(1.5)', mixBlendMode: 'screen' }}
         />
         <p className="mt-3 text-lg text-white/50">

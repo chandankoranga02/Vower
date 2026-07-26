@@ -48,11 +48,28 @@ export default function PhoneForm({ onSubmitted, onBack }) {
     }
 
     return (
-        <div className="w-full max-w-sm">
+        <div className="w-full max-w-md px-2">
+            {/* Mobile-only brand block */}
+            <div className="mb-10 flex flex-col items-center text-center lg:hidden">
+                <img
+                    src="/logo.jpeg"
+                    alt="Vower icon"
+                    className="h-32 w-32 object-contain rounded-3xl shadow-lg shadow-black/10 relative z-10"
+                />
+                <img
+                    src="/WORDLOGON.png"
+                    alt="Vower"
+                    className="h-28 w-auto object-contain -mt-6 relative z-0 scale-150"
+                />
+                <p className="-mt-7 text-sm font-medium tracking-wide text-volt-deep/50 uppercase">
+                    Powering Every Promise
+                </p>
+            </div>
+
             <button
                 type="button"
                 onClick={onBack}
-                className="mb-6 flex items-center gap-1.5 text-sm text-volt-deep/50 hover:text-volt-deep"
+                className="mb-6 flex items-center gap-1.5 p-2 -m-2 rounded-lg text-sm text-volt-deep/50 hover:text-volt-deep active:bg-volt-deep/5 transition"
             >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                     <path d="M15 6 9 12l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -99,7 +116,7 @@ export default function PhoneForm({ onSubmitted, onBack }) {
                             onChange={handleChange}
                             autoComplete="name"
                             placeholder="Full name"
-                            className={`w-full rounded-xl border bg-gray-50 px-4 py-2.5 text-[15px] text-volt-deep placeholder:text-volt-deep/40 outline-none transition focus:border-volt focus:bg-white focus:ring-4 focus:ring-volt/15 ${errors.fullName ? 'border-red-400' : 'border-volt-deep/10'}`}
+                            className={`w-full rounded-xl border bg-gray-50 px-4 py-3.5 text-base text-volt-deep placeholder:text-volt-deep/40 outline-none transition focus:border-volt focus:bg-white focus:ring-4 focus:ring-volt/15 ${errors.fullName ? 'border-red-400' : 'border-volt-deep/10'}`}
                         />
                     </div>
                     {errors.fullName && <span className="mt-1 block text-xs text-red-500">{errors.fullName}</span>}
@@ -115,7 +132,7 @@ export default function PhoneForm({ onSubmitted, onBack }) {
                             onChange={handleChange}
                             autoComplete="tel"
                             placeholder="Phone number"
-                            className={`w-full rounded-xl border bg-gray-50 px-4 py-2.5 text-[15px] text-volt-deep placeholder:text-volt-deep/40 outline-none transition focus:border-volt focus:bg-white focus:ring-4 focus:ring-volt/15 ${errors.phone ? 'border-red-400' : 'border-volt-deep/10'}`}
+                            className={`w-full rounded-xl border bg-gray-50 px-4 py-3.5 text-base text-volt-deep placeholder:text-volt-deep/40 outline-none transition focus:border-volt focus:bg-white focus:ring-4 focus:ring-volt/15 ${errors.phone ? 'border-red-400' : 'border-volt-deep/10'}`}
                         />
                     </div>
                     {errors.phone && <span className="mt-1 block text-xs text-red-500">{errors.phone}</span>}
@@ -124,7 +141,7 @@ export default function PhoneForm({ onSubmitted, onBack }) {
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="mt-2 flex w-full items-center justify-center rounded-xl bg-[#2A2A2E] py-3 text-sm font-semibold text-white shadow-sm shadow-black/20 transition hover:bg-[#3A3A3E] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="mt-3 flex w-full items-center justify-center rounded-2xl bg-[#2A2A2E] py-4 text-base font-semibold text-white shadow-sm shadow-black/20 transition hover:bg-[#3A3A3E] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                     {submitting ? 'Sending OTP…' : 'Continue'}
                 </button>
