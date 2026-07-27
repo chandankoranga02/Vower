@@ -1,26 +1,31 @@
 require("dotenv").config();
-
+// Package imported 
 const express = require("express");
 const cors = require("cors");
-
 const prisma = require("./config/prisma");
-const Authrouter = require("./modules/Authentication/auth.routes");
-
 const app = express();
 const PORT = 5000;
 
+//External Imported modules 
+const Authrouter = require("./modules/Authentication/auth.routes");
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://vower-kappa.vercel.app",
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: allowedOrigins,
     credentials: true,
-  })
+  }),
 );
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/auth", Authrouter);
 
+app.use("/auth", Authrouter);
 app.get("/", (req, res) => {
   res.send("Server is running 🚀");
 });

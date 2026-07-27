@@ -4,28 +4,33 @@ import MethodSelect from './MethodSelect.jsx'
 import SignupEmailPage from './SignupEmailForm.jsx'
 import PhoneForm from './PhoneForm.jsx'
 import OtpStep from './OtpStep.jsx'
-import useGoogleAuth from '../hooks/useGoogleAuth' // <-- Import the hook
+import useGoogleAuth from '../hooks/useGoogleAuth'
 
 export default function Signup() {
   const [step, setStep] = useState('method')
-  const [email, setEmail] = useState('')
+
+  // Store complete email signup data until OTP verification is complete
+  const [emailSignupData, setEmailSignupData] = useState(null)
+
+  // Phone flow
   const [phone, setPhone] = useState('')
 
-  // Initialise the hook once
+  // Google Authentication
   const googleLogin = useGoogleAuth({
-  onSuccess: (response) => {
-    console.log("Google Login Success:", response);
+    onSuccess: (response) => {
+      console.log('Google Login Success:', response)
 
-    // TODO:
-    // 1. Send the token to your backend
-    // 2. Store JWT/session
-    // 3. Navigate to dashboard
-  },
+      // TODO:
+      // Send Google token to backend
+      // Receive your backend JWT
+      // Store session
+      // Navigate to dashboard
+    },
 
-  onError: (error) => {
-    console.error("Google Login Failed:", error);
-  },
-});
+    onError: (error) => {
+      console.error('Google Login Failed:', error)
+    },
+  })
 
   function handleMethodSelect(method) {
     if (method === 'email') {
@@ -33,37 +38,84 @@ export default function Signup() {
     } else if (method === 'phone') {
       setStep('phoneForm')
     } else if (method === 'google') {
-      googleLogin() // <-- Launch Google Sign-In
+      googleLogin()
     }
   }
 
   function renderStep() {
     switch (step) {
+      // -----------------------------------
+      // SELECT SIGNUP METHOD
+      // -----------------------------------
+
       case 'method':
         return <MethodSelect onSelect={handleMethodSelect} />
+
+      // -----------------------------------
+      // EMAIL SIGNUP FORM
+      // -----------------------------------
 
       case 'emailForm':
         return (
           <SignupEmailPage
             onBack={() => setStep('method')}
             onSubmitted={(values) => {
-              setEmail(values.email)
+              // OTP has successfully been sent at this point.
+              // Keep required signup information until OTP verification.
+
+              setEmailSignupData({
+                fullName: values.fullName,
+                email: values.email,
+                password: values.password,
+              })
+
               setStep('emailOtp')
             }}
           />
         )
 
+      // -----------------------------------
+      // EMAIL OTP VERIFICATION
+      // -----------------------------------
+
       case 'emailOtp':
+        if (!emailSignupData) {
+          setStep('emailForm')
+          return null
+        }
+
         return (
           <OtpStep
             mode="email"
-            contact={email}
-            onBack={() => setStep('emailForm')}
-            onVerified={() => {
-              alert('Account verified. Welcome to Vower!')
+            email={emailSignupData.email}
+            fullName={emailSignupData.fullName}
+            password={emailSignupData.password}
+
+            onBack={() => {
+              setStep('emailForm')
+            }}
+
+            onVerified={(data) => {
+              console.log('Email signup completed:', data)
+
+              // Backend should return JWT here
+              console.log('JWT:', data.token)
+
+              // Signup information is no longer needed
+              setEmailSignupData(null)
+
+              alert('Account created. Welcome to Vower!')
+
+              // Later:
+              // localStorage.setItem('token', data.token)
+              // navigate('/dashboard')
             }}
           />
         )
+
+      // -----------------------------------
+      // PHONE SIGNUP FORM
+      // -----------------------------------
 
       case 'phoneForm':
         return (
@@ -76,13 +128,23 @@ export default function Signup() {
           />
         )
 
+      // -----------------------------------
+      // PHONE OTP
+      // -----------------------------------
+
       case 'phoneOtp':
         return (
           <OtpStep
             mode="phone"
             contact={phone}
-            onBack={() => setStep('phoneForm')}
-            onVerified={() => {
+
+            onBack={() => {
+              setStep('phoneForm')
+            }}
+
+            onVerified={(data) => {
+              console.log('Phone signup completed:', data)
+
               alert('Account verified. Welcome to Vower!')
             }}
           />
@@ -94,12 +156,16 @@ export default function Signup() {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen w-full bg-[#F5F5F7]">
+    <div className="flex min-h-screen w-full flex-col bg-[#F5F5F7] lg:flex-row">
+
       <BrandPanel />
 
-      <div className="flex w-full flex-1 items-start lg:items-center justify-center px-6 pt-[9vh] pb-6 lg:py-12 lg:w-1/2 bg-[#F5F5F7]">
+      <div className="flex w-full flex-1 items-start justify-center bg-[#F5F5F7] px-6 pb-6 pt-[9vh] lg:w-1/2 lg:items-center lg:py-12">
+
         {renderStep()}
+
       </div>
+
     </div>
   )
 }

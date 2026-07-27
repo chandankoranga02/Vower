@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 const OTP_LENGTH = 6
 const RESEND_SECONDS = 30
 
-export default function OtpStep({ email, contact, mode = 'email', onVerified, onBack }) {
+export default function OtpStep({ email, fullName, password , contact, mode = 'email', onVerified, onBack }) {
   const displayContact = contact || email
   const isPhone = mode === 'phone'
   const [digits, setDigits] = useState(Array(OTP_LENGTH).fill(''))
@@ -49,27 +49,114 @@ export default function OtpStep({ email, contact, mode = 'email', onVerified, on
     inputsRef.current[Math.min(pasted.length, OTP_LENGTH - 1)]?.focus()
   }
 
-  function handleVerify(e) {
-    e.preventDefault()
-    const code = digits.join('')
-    if (code.length < OTP_LENGTH) {
-      setError('Enter all 6 digits.')
-      return
-    }
-    setVerifying(true)
-    // Simulated verification — swap for a real API call.
-    setTimeout(() => {
-      setVerifying(false)
-      onVerified(code)
-    }, 700)
+async function handleVerify(e) {
+  e.preventDefault()
+
+  const code = digits.join('')
+
+  if (code.length !== OTP_LENGTH) {
+    setError('Enter all 6 digits.')
+    return
   }
 
-  function handleResend() {
-    if (secondsLeft > 0) return
+  setVerifying(true)
+  setError('')
+
+  try {
+    // STEP 1: Verify OTP
+    const verifyResponse = await fetch(
+      'http://localhost:5000/auth/signup/email/verify-otp',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          otp: code,
+        }),
+      }
+    )
+
+    const verifyData = await verifyResponse.json()
+
+    if (!verifyResponse.ok) {
+      setError(verifyData.msg || 'Invalid OTP.')
+      return
+    }
+
+    // STEP 2: OTP verified -> create account
+    const signupResponse = await fetch(
+      'http://localhost:5000/auth/signup/email',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName,
+          email,
+          password,
+          verificationToken: verifyData.verificationToken,
+        }),
+      }
+    )
+
+    const signupData = await signupResponse.json()
+
+    if (!signupResponse.ok) {
+      setError(signupData.msg || 'Failed to create account.')
+      return
+    }
+
+    console.log('Account created:', signupData)
+
+    // signupData.token should be your JWT
+    onVerified(signupData)
+
+  } catch (error) {
+    console.error('Signup error:', error)
+    setError('Unable to connect to server.')
+  } finally {
+    setVerifying(false)
+  }
+}
+
+async function handleResend() {
+  if (secondsLeft > 0) return
+
+  setError('')
+
+  try {
+    const response = await fetch(
+      'http://localhost:5000/auth/signup/email/send-otp',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+        }),
+      }
+    )
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      setError(data.msg || 'Failed to resend OTP.')
+      return
+    }
+
     setSecondsLeft(RESEND_SECONDS)
     setDigits(Array(OTP_LENGTH).fill(''))
     inputsRef.current[0]?.focus()
+
+  } catch (error) {
+    console.error('Resend OTP error:', error)
+    setError('Unable to resend OTP.')
   }
+}
 
   return (
     <div className="w-full max-w-sm">

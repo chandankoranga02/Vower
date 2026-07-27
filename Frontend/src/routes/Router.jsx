@@ -17,7 +17,6 @@ export default function Router() {
         <Route path="/profile/edit" element={<EditProfilePage />} />
         <Route path="/signup" element={<Signup />} />
         
-        {/* FIXED: Small 'f' aur hyphen (-) add kar diya hai */}
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       </Routes>
     </BrowserRouter>

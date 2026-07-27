@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const prisma = require("../../../config/prisma");
+const jwt = require("jsonwebtoken");
 
 const verifyOTP = async ({ email, otp }) => {
  

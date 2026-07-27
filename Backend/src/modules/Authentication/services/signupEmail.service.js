@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const prisma = require("../../../config/prisma");
 const { generateToken } = require("../../../utils/jwt");
+const jwt = require('jsonwebtoken')
 
 const signUpEmail = async ({
   email,
@@ -13,9 +14,6 @@ const signUpEmail = async ({
   deviceName,
   browser,
 }) => {
-  const existingUser = await prisma.signupData.findUnique({
-    where: { email: email },
-  });
 
   if (!verificationToken) {
     return {
@@ -49,23 +47,20 @@ const signUpEmail = async ({
     };
   }
 
+    const existingUser = await prisma.signupdata.findUnique({
+    where: { email: email },
+  });
+
+  
+
   if (existingUser) {
     return { code: 409, msg: "user Already exists " };
   }
+
   const saltRounds = 10;
-  const OTPgenrated = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-  };
-
-  const otp = OTPgenrated();
-
-  const hashedOtp = await bcrypt.hash(otp, saltRounds);
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-
-
-
-  const user = await prisma.signupData.create({
+  const user = await prisma.signupdata.create({
     data: {
       email: email,
       full_name: fullName,

@@ -19,8 +19,6 @@ const SendOTP = async ({ email }) => {
 
  
   const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
-
-  
   await prisma.emailOtp.upsert({
     where: {
       email,

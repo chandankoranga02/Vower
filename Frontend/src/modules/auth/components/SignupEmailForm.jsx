@@ -97,18 +97,52 @@ export default function SignupEmailPage({ onBack, onSubmitted }) {
         }
     }
 
-    function handleSubmit(e) {
-        e.preventDefault()
-        const nextErrors = validateEmailForm(values)
-        setErrors(nextErrors)
-        if (Object.keys(nextErrors).length > 0) return
+    async function handleSubmit(e) {
+    e.preventDefault()
+    const nextErrors = validateEmailForm(values)
+    setErrors(nextErrors)
 
-        setSubmitting(true)
-        setTimeout(() => {
-            setSubmitting(false)
-            onSubmitted(values)
-        }, 700)
+    if (Object.keys(nextErrors).length > 0) return
+    setSubmitting(true)
+
+    try {
+        const response = await fetch(
+            "http://localhost:5000/auth/signup/email/send-otp",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: values.email,
+                }),
+            }
+        )
+
+        const data = await response.json()
+
+        if (!response.ok) {
+            setErrors((prev) => ({
+                ...prev,
+                email: data.msg || "Failed to send OTP.",
+            }))
+            return
+        }
+
+        // OTP successfully sent
+        onSubmitted(values)
+
+    } catch (error) {
+        console.error("Send OTP error:", error)
+
+        setErrors((prev) => ({
+            ...prev,
+            email: "Unable to connect to server.",
+        }))
+    } finally {
+        setSubmitting(false)
     }
+}
 
     return (
         <div className="w-full max-w-sm">
