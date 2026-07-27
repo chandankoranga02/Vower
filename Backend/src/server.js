@@ -1,33 +1,35 @@
+require("dotenv").config();
+
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
+const cors = require("cors");
+
+const prisma = require("./config/prisma");
+const Authrouter = require("./modules/Authentication/auth.routes");
+
 const app = express();
 const PORT = 5000;
-const prisma = new PrismaClient();
 
-const Authrouter = require('./modules/Authentication/auth.routes')
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  })
+);
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/auth", Authrouter);
 
-// Authentication Routes
-app.use('/api/auth/', Authrouter);
-
-// Basic route
 app.get("/", (req, res) => {
   res.send("Server is running 🚀");
-}); 
-
-
-
-
+});
 
 async function startServer() {
   try {
     await prisma.$connect();
-    console.log("✅ Database connected successfully");
 
+    console.log("✅ Database connected successfully");
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });

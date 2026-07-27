@@ -1,10 +1,10 @@
 const bcrypt = require("bcrypt");
-const prisma = require("../../config/prisma");
-const { generateToken } = require("../../utils/jwt");
+const prisma = require("../../../config/prisma");
+const { generateToken } = require("../../../utils/jwt");
 
-const signUpEmail = async ({
-  email,
-  password,
+
+const SignUpphone = async ({
+  phone,
   fullName,
   ipAddress,
   operatingSystem,
@@ -12,24 +12,24 @@ const signUpEmail = async ({
   deviceName,
   browser,
 }) => {
-
-
+ 
+  
   const existingUser = await prisma.signupData.findUnique({
-    where: { email: email },
+    where: { phone : phone },
   });
 
   if (existingUser) {
     return { code: 409, msg: "user Already exists " };
   }
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  // const saltRounds = 10;
+  // const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   const user = await prisma.signupData.create({
     data: {
-      email: email,
+      phone : phone,
       full_name: fullName,
-      password_hash: hashedPassword,
-      provider: "EMAIL",
+      // password_hash: hashedPassword,
+      provider: "PHONE",
       ip_address: ipAddress,
       operating_system: operatingSystem,
       device_type: deviceType,
@@ -48,8 +48,4 @@ const signUpEmail = async ({
     msg: "Signup successful",
     token,
   };
-};
-
-module.exports = {
-  signUpEmail,
 };
