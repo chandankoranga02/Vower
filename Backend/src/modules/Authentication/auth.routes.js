@@ -1,0 +1,15 @@
+const express = require("express");
+const router = express.Router();
+
+
+const AuthController = require('./auth.controller')
+
+router.post('/signup/email', AuthController.SignUpemail)
+router.post('/signup/phone', AuthController.SignUpphone)
+
+router.post('/login/phone', AuthController.loginPhone)
+router.post('/login/email', AuthController.loginEmail)
+
+router.post("/google", AuthController.googleAuth);
+
+module.exports = router;

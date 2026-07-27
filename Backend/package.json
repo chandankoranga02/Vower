@@ -6,14 +6,14 @@
   "author": "Vower",
   "type": "commonjs",
   "main": "src/server.js",
- "scripts": {
-  "dev:server": "nodemon src/server.js",
-  "prisma:studio": "prisma studio",
-  "dev": "concurrently -n SERVER,PRISMA \"npm run dev:server\" \"npm run prisma:studio\"",
-  "start": "node src/server.js",
-  "prisma:generate": "prisma generate",
-  "prisma:migrate": "prisma migrate dev"
-},
+  "scripts": {
+    "dev:server": "nodemon src/server.js",
+    "prisma:studio": "prisma studio",
+    "dev": "concurrently -n SERVER,PRISMA \"npm run dev:server\" \"npm run prisma:studio\"",
+    "start": "node src/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev"
+  },
   "dependencies": {
     "@prisma/client": "^7.9.0",
     "bcrypt": "^6.0.0",
@@ -22,7 +22,8 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "google-auth-library": "^10.9.1",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "ua-parser-js": "^2.0.10"
   },
   "devDependencies": {
     "concurrently": "^10.0.4",

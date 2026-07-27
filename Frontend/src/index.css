@@ -1,3 +1,39 @@
 
 @import "tailwindcss";
 
+@theme {
+  --color-volt: #10b981;
+  --color-volt-deep: #2a2a2e;
+  --color-volt-dim: #52525b;
+  --color-volt-soft: #e4e4e7;
+
+  --font-display: "Segoe UI", system-ui, sans-serif;
+
+  --animate-plugSlide: plugSlide 2.4s ease-in-out infinite;
+  --animate-pulseRing: pulseRing 2.4s ease-out infinite;
+  --animate-boltFlicker: boltFlicker 1.8s ease-in-out infinite;
+  --animate-floatSlow: floatSlow 6s ease-in-out infinite;
+}
+
+@keyframes plugSlide {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(12px); }
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  70% { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+@keyframes boltFlicker {
+  0%, 100% { opacity: 1; }
+  45% { opacity: 0.35; }
+  55% { opacity: 1; }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+

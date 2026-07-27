@@ -1,203 +1,129 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-  
+const EyeIcon = ({ className = "w-5 h-5" }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+  </svg>
+);
+
+const EyeOffIcon = ({ className = "w-5 h-5" }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.12 10.12 0 015.122-1.063c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21f-9-9m0 0L3 3" />
+  </svg>
+);
+
+export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({ email: '', password: '' });
 
-  const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
-  const handleLogin = async (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError('');
-
-    if (!validateEmail(email)) {
-      setError('Please enter a valid email address.');
-      return;
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long.');
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      if (email === "error@vower.internal") {
-        throw new Error("Invalid email or password.");
-      }
-
-      console.log("Logged in:", { email, password, rememberMe });
-      alert("Login Successful!");
-    } catch (err) {
-      setError(err.message || 'Something went wrong.');
-    } finally {
-      setIsLoading(false);
-    }
+    console.log('Login data:', formData);
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col lg:flex-row font-sans selection:bg-emerald-500 selection:text-zinc-950">
-      
-      {/* Mobile Branding Header (Visible only on Mobile/Tablet) */}
-      <div className="lg:hidden px-6 pt-8 pb-4 flex items-center justify-between border-b border-zinc-900/80 bg-zinc-950/50 backdrop-blur-md sticky top-0 z-20">
-        <div className="flex items-center gap-2.5">
-          <div className="h-8 w-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-zinc-950 text-sm shadow-lg shadow-emerald-500/20">
-            V
+    <div className="min-h-screen w-full bg-[#F5F5F7] flex items-center justify-center p-4 sm:p-6 font-sans text-zinc-900 overflow-x-hidden">
+      <div className="w-full max-w-sm flex flex-col items-center">
+        
+        {/* LOGO & HEADING SECTION */}
+        <div className="text-center pt-8 mb-6 flex flex-col items-center justify-center relative w-full">
+          <img 
+            src="/logo.jpeg" 
+            alt="Vower Logo" 
+            className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-[2rem] shadow-lg z-10"
+          />
+          <div className="flex justify-center -mt-8 sm:-mt-10 z-20 pointer-events-none">
+            <img 
+              src="/WORDLOGON.png" 
+              alt="Vower Brand" 
+              className="h-28 sm:h-36 w-auto object-contain drop-shadow-md"
+            />
           </div>
-          <span className="font-bold text-xl tracking-wider text-zinc-100">VOWER</span>
-        </div>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400/90 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20">
-          v1.0
-        </span>
-      </div>
-
-      {/* Desktop Branding Side Panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-zinc-900/60 border-r border-zinc-800/60 p-12 flex-col justify-between relative overflow-hidden">
-        <div className="flex items-center gap-3 z-10">
-          <div className="h-9 w-9 rounded-xl bg-emerald-500 flex items-center justify-center font-bold text-zinc-950 text-lg shadow-lg shadow-emerald-500/20">
-            V
-          </div>
-          <span className="font-bold text-2xl tracking-wider text-zinc-100">VOWER</span>
-        </div>
-
-        <div className="space-y-4 max-w-md z-10">
-          <h2 className="text-3xl font-bold tracking-tight text-zinc-100 leading-tight">
-           Powering Every Promise
+          <p className="text-[11px] sm:text-[12px] text-slate-400 font-bold tracking-[0.2em] uppercase -mt-3">
+            POWERING EVERY PROMISE
+          </p>
+          <h2 className="text-xl sm:text-2xl font-bold text-zinc-800 mt-5 tracking-tight">
+            Welcome Back
           </h2>
-          <p className="text-zinc-400 text-sm leading-relaxed">
-            Manage your local environments, stream system diagnostics, and coordinate team deployments in one unified dashboard.
+          <p className="text-xs text-slate-500 font-medium mt-1.5 px-2">
+            Please enter your details to sign in.
           </p>
         </div>
 
-        <div className="text-xs text-zinc-500 z-10">
-          &copy; {new Date().getFullYear()} Vower Inc. All rights reserved.
-        </div>
-        
-        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-      </div>
-
-      {/* Form Container: Fully Mobile Optimized */}
-      <div className="flex-1 flex items-center justify-center px-5 py-8 sm:px-8 lg:p-12">
-        <div className="w-full max-w-sm space-y-6 sm:space-y-7">
-          
-          <div className="space-y-1.5">
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-100">
-              Sign in
-            </h1>
-            <p className="text-xs sm:text-sm text-zinc-400">
-              Enter your account credentials to continue
-            </p>
-          </div>
-
-          {error && (
-            <div className="p-3.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs sm:text-sm font-medium animate-fade-in">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleLogin} className="space-y-4 sm:space-y-5">
-            
-            {/* Email Field (44px+ height for touch target, 16px text to prevent auto-zoom) */}
-            <div className="space-y-2">
-              <label className="text-xs font-semibold text-zinc-300 uppercase tracking-wider">
-                Email
+        {/* FORMS SECTION */}
+        <div className="w-full">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-zinc-600 mb-1.5 ml-1">
+                Email Address
               </label>
               <input
                 type="email"
+                name="email"
                 required
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (error) setError('');
-                }}
-                placeholder="dev@vower.internal"
-                className="w-full h-12 px-4 rounded-lg bg-zinc-900 border border-zinc-800 text-base sm:text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="name@company.com"
+                className="w-full px-4 py-3.5 rounded-2xl bg-white border border-slate-200 text-zinc-900 text-sm outline-none focus:border-zinc-900 transition-all placeholder:text-slate-400 shadow-sm"
               />
             </div>
 
-            {/* Password Field */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-zinc-300 uppercase tracking-wider">
+            <div>
+              <div className="flex justify-between items-center mb-1.5 px-1">
+                <label className="block text-xs font-semibold text-zinc-600">
                   Password
                 </label>
-                <button
-                  type="button"
-                  onClick={() => alert("Reset password API flow")}
-                  className="text-xs text-emerald-400 hover:underline active:text-emerald-300 font-medium"
+                <Link 
+                  to="/forgot-password" 
+                  className="text-xs text-zinc-500 hover:text-black font-semibold transition-colors"
                 >
-                  Forgot?
-                </button>
+                  Forgot password?
+                </Link>
               </div>
-              
               <div className="relative">
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
                   required
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    if (error) setError('');
-                  }}
+                  value={formData.password}
+                  onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full h-12 pl-4 pr-14 rounded-lg bg-zinc-900 border border-zinc-800 text-base sm:text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
+                  className="w-full px-4 py-3.5 pr-11 rounded-2xl bg-white border border-slate-200 text-zinc-900 text-sm outline-none focus:border-zinc-900 transition-all placeholder:text-slate-400 shadow-sm"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-0 top-0 h-12 px-4 flex items-center justify-center text-xs font-medium text-zinc-400 hover:text-zinc-200 active:text-white select-none"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-zinc-700 transition-colors"
+                  aria-label="Toggle Password Visibility"
                 >
-                  {showPassword ? "Hide" : "Show"}
+                  {showPassword ? <EyeOffIcon /> : <EyeIcon />}
                 </button>
               </div>
             </div>
 
-            {/* Remember Me Box */}
-            <div className="pt-1">
-              <label className="flex items-center gap-3 py-1 cursor-pointer text-zinc-300 select-none">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-5 w-5 rounded bg-zinc-900 border-zinc-800 text-emerald-500 focus:ring-emerald-500 focus:ring-offset-zinc-950 accent-emerald-500"
-                />
-                <span className="text-xs sm:text-sm font-medium">Remember this device</span>
-              </label>
-            </div>
-
-            {/* Mobile Touch-Optimized Submit Button */}
             <button
               type="submit"
-              disabled={isLoading}
-              className="w-full h-12 rounded-lg bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 disabled:bg-emerald-500/50 text-zinc-950 font-bold text-sm tracking-wide transition duration-150 active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/10"
+              className="w-full py-4 mt-2 rounded-2xl bg-zinc-900 hover:bg-black text-white font-bold text-sm tracking-wide transition-all active:scale-[0.98] shadow-md cursor-pointer"
             >
-              {isLoading ? (
-                <>
-                  <span className="w-5 h-5 border-2 border-zinc-950/30 border-t-zinc-950 rounded-full animate-spin" />
-                  <span>Signing in...</span>
-                </>
-              ) : (
-                "Sign In"
-              )}
+              Sign In
             </button>
           </form>
-
-          <p className="text-[11px] sm:text-xs text-center text-zinc-500 leading-relaxed pt-2">
-            By signing in, you agree to Vower's <br className="sm:hidden" />
-            <a href="#terms" className="underline hover:text-zinc-400">Terms</a> and <a href="#privacy" className="underline hover:text-zinc-400">Privacy Policy</a>.
-          </p>
-
         </div>
+
+        <div className="mt-8 text-center text-xs text-slate-500">
+          Don't have an account?{' '}
+          <Link to="/signup" className="text-zinc-900 font-bold hover:underline">
+            Sign up
+          </Link>
+        </div>
+
       </div>
     </div>
   );
-};
-
-export default Login;
+}

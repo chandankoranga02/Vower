@@ -1,0 +1,47 @@
+
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  
+}
+
+enum AuthProvider {
+  EMAIL
+  GOOGLE
+  PHONE
+}
+
+model Signupdata {
+  user_id             Int          @id @default(autoincrement())
+
+  
+  full_name           String?
+  provider            AuthProvider
+  email               String?      @unique
+  phone               String?      @unique
+  password_hash       String?
+
+  google_id           String?      @unique
+
+
+  temporary_otp       String?
+  otp_expires_at      DateTime?
+
+  ip_address          String?
+  operating_system    String?
+  device_type         String?
+  device_name         String?
+  browser             String?
+
+  profile_completion  Boolean      @default(false)
+
+  created_at          DateTime     @default(now())
+  updated_at          DateTime     @updatedAt
+
+  @@map("signup_data")
+}
