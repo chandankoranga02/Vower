@@ -10,8 +10,8 @@ import {
 const navItems = [
     { id: 'home', icon: Home, label: 'Home' },
     { id: 'map', icon: MapPin, label: 'Map' },
-    { id: 'reservations', icon: CalendarCheck, label: 'Reservations' },
-    { id: 'notifications', icon: Bell, label: 'Notifications' },
+    { id: 'reservations', icon: CalendarCheck, label: 'AI' },
+    { id: 'notifications', icon: Bell, label: 'Updates' },
     { id: 'profile', icon: User, label: 'Profile' },
 ];
 
