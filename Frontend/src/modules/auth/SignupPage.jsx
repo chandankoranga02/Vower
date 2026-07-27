@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import BrandPanel from './BrandPanel.jsx'
-import MethodSelect from './MethodSelect.jsx'
-import SignupEmailPage from './SignupEmailForm.jsx'
-import PhoneForm from './PhoneForm.jsx'
-import OtpStep from './OtpStep.jsx'
-import useGoogleAuth from '../hooks/useGoogleAuth'
+import BrandPanel from './components/BrandPanel.jsx'
+import MethodSelect from './components/MethodSelect.jsx'
+import SignupEmailPage from './components/SignupEmailForm.jsx'
+import PhoneForm from './components/PhoneForm.jsx'
+import OtpStep from './components/OtpStep.jsx'
+import useGoogleAuth from './hooks/useGoogleAuth'
 
-export default function Signup() {
+export default function SignupPage() {
   const [step, setStep] = useState('method')
 
   // Store complete email signup data until OTP verification is complete
@@ -160,9 +160,11 @@ export default function Signup() {
 
       <BrandPanel />
 
-      <div className="flex w-full flex-1 items-start justify-center bg-[#F5F5F7] px-6 pb-6 pt-[9vh] lg:w-1/2 lg:items-center lg:py-12">
+      <div className="flex w-full flex-1 items-center justify-center bg-[#F5F5F7] px-6 pb-6 pt-6 lg:w-1/2 lg:py-12">
 
-        {renderStep()}
+        <div className="m-auto">
+          {renderStep()}
+        </div>
 
       </div>
 

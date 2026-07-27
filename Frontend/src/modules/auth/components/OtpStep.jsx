@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { AUTH_ENDPOINTS } from '../../../apis/endpoints'
 
 const OTP_LENGTH = 6
 const RESEND_SECONDS = 30
@@ -65,7 +66,7 @@ async function handleVerify(e) {
   try {
     // STEP 1: Verify OTP
     const verifyResponse = await fetch(
-      'http://localhost:5000/auth/signup/email/verify-otp',
+      AUTH_ENDPOINTS.VERIFY_EMAIL_OTP,
       {
         method: 'POST',
         headers: {
@@ -87,7 +88,7 @@ async function handleVerify(e) {
 
     // STEP 2: OTP verified -> create account
     const signupResponse = await fetch(
-      'http://localhost:5000/auth/signup/email',
+      AUTH_ENDPOINTS.SIGNUP_EMAIL,
       {
         method: 'POST',
         headers: {
@@ -129,7 +130,7 @@ async function handleResend() {
 
   try {
     const response = await fetch(
-      'http://localhost:5000/auth/signup/email/send-otp',
+      AUTH_ENDPOINTS.SEND_EMAIL_OTP,
       {
         method: 'POST',
         headers: {

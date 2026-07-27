@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Router from '../src/routes/Router'
+import Router from './routes/Router'
 
 function App() {
   return (

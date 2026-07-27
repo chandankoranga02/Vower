@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import useGoogleAuth from './hooks/useGoogleAuth';
 
 const EyeIcon = ({ className = "w-5 h-5" }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -14,9 +15,34 @@ const EyeOffIcon = ({ className = "w-5 h-5" }) => (
   </svg>
 );
 
+const GoogleIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24">
+    <path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.66-.22-2.45H12v4.63h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.89c2.27-2.09 3.56-5.17 3.56-8.81Z" />
+    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.07 7.94-2.92l-3.89-3c-1.08.73-2.46 1.16-4.05 1.16-3.11 0-5.75-2.1-6.69-4.92H1.28v3.09A12 12 0 0 0 12 24Z" />
+    <path fill="#FBBC05" d="M5.31 14.32a7.2 7.2 0 0 1 0-4.64V6.59H1.28a12 12 0 0 0 0 10.82l4.03-3.09Z" />
+    <path fill="#EA4335" d="M12 4.77c1.76 0 3.34.6 4.59 1.79l3.44-3.44C17.94 1.19 15.24 0 12 0A12 12 0 0 0 1.28 6.59l4.03 3.09C6.25 6.86 8.89 4.77 12 4.77Z" />
+  </svg>
+);
+
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
+
+  // Google Authentication — reuses existing hook & client ID
+  const googleLogin = useGoogleAuth({
+    onSuccess: (response) => {
+      console.log('Google Login Success:', response);
+
+      // TODO:
+      // Send Google token to backend
+      // Receive your backend JWT
+      // Store session
+      // Navigate to dashboard
+    },
+    onError: (error) => {
+      console.error('Google Login Failed:', error);
+    },
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -114,6 +140,23 @@ export default function LoginPage() {
               Sign In
             </button>
           </form>
+
+          {/* DIVIDER */}
+          <div className="flex items-center gap-3 my-5">
+            <span className="h-px flex-1 bg-slate-200" />
+            <span className="text-xs font-medium uppercase tracking-widest text-slate-400">or</span>
+            <span className="h-px flex-1 bg-slate-200" />
+          </div>
+
+          {/* GOOGLE SIGN-IN */}
+          <button
+            type="button"
+            onClick={googleLogin}
+            className="flex w-full items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-semibold text-zinc-700 shadow-sm transition-all hover:border-slate-300 hover:bg-gray-50 active:scale-[0.98] cursor-pointer"
+          >
+            <GoogleIcon />
+            Continue with Google
+          </button>
         </div>
 
         <div className="mt-8 text-center text-xs text-slate-500">
@@ -127,3 +170,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

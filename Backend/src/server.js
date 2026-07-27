@@ -9,14 +9,11 @@ const PORT = 5000;
 //External Imported modules 
 const Authrouter = require("./modules/Authentication/auth.routes");
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://vower-kappa.vercel.app",
-];
+
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: process.env.CLIENT_URL,
     credentials: true,
   }),
 );

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { AUTH_ENDPOINTS } from '../../../apis/endpoints'
 
 const emailInitialValues = {
     fullName: '',
@@ -107,7 +108,7 @@ export default function SignupEmailPage({ onBack, onSubmitted }) {
 
     try {
         const response = await fetch(
-            "http://localhost:5000/auth/signup/email/send-otp",
+            AUTH_ENDPOINTS.SEND_EMAIL_OTP,
             {
                 method: "POST",
                 headers: {
