@@ -91,6 +91,4 @@ const signUpEmail = async ({
   };
 };
 
-module.exports = {
-  signUpEmail,
-};
+module.exports = signUpEmail

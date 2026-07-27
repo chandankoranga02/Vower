@@ -49,3 +49,5 @@ const SignUpphone = async ({
     token,
   };
 };
+
+module.exports = SignUpphone;
