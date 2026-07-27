@@ -38,7 +38,7 @@ const SendOTP = async ({ email }) => {
 
   // 5. Send actual OTP through email
   const { data, error } = await resend.emails.send({
-    from: "Vower <onboarding@resend.dev>",
+    from: "Vower <no-reply@appnests.in>",
     to: email,
     subject: "Verify your email - Vower",
     html: emailOtpTemplate(otp),
