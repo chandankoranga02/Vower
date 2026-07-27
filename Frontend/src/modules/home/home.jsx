@@ -155,28 +155,28 @@ export default function HomePage() {
         <div className="grid grid-cols-2 gap-4 sm:gap-6">
           <QuickAction 
             icon={Activity} 
-            label="1st" 
+            label="Stations" 
             accent="#2F6FED" 
             className="h-36 sm:h-44"
             onClick={() => handleNavigate("1st", "/1st-path")} 
           />
           <QuickAction 
             icon={MapPin} 
-            label="2nd" 
+            label="Profile" 
             accent="#B4FF39" 
             className="h-36 sm:h-44"
             onClick={() => handleNavigate("2nd", "/2nd-path")} 
           />
           <QuickAction 
             icon={Zap} 
-            label="3rd" 
+            label="Assist Route" 
             accent="#B4FF39" 
             className="h-36 sm:h-44"
             onClick={() => handleNavigate("3rd", "/3rd-path")} 
           />
           <QuickAction 
             icon={Settings} 
-            label="4th" 
+            label="Updates" 
             accent="#2F6FED" 
             className="h-36 sm:h-44"
             onClick={() => handleNavigate("4th", "/4th-path")} 
