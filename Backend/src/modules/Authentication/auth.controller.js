@@ -6,7 +6,7 @@ const sendOTPService = require("./services/sendOTP.service");
 const verifyOTPService = require("./services/verifyOTP.service");
 const googleAuthService = require("./services/googleOuath.service");
 
-const { getDeviceInfo } = require("../../utils/deviceInfo");
+const { getDeviceInfo } = require("../../utils/DeviceInfo");
 
 const signUpEmail = async (req, res) => {
   try {
