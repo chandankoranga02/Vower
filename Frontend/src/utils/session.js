@@ -1,10 +1,3 @@
-/**
- * session.js
- *
- * Central utility for managing the user's auth session (JWT token).
- * All token read/write operations go through here — one place to change
- * storage strategy (e.g., move to sessionStorage or httpOnly cookies) in future.
- */
 
 const TOKEN_KEY = "vower_token";
 
