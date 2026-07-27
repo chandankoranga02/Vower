@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { AUTH_ENDPOINTS } from '../../../apis/endpoints'
 
 const initialValues = {
     fullName: '',
@@ -26,6 +27,7 @@ export default function PhoneForm({ onSubmitted, onBack }) {
     const [values, setValues] = useState(initialValues)
     const [errors, setErrors] = useState({})
     const [submitting, setSubmitting] = useState(false)
+    const [serverError, setServerError] = useState('')
 
     function handleChange(e) {
         const { name, value } = e.target
@@ -35,17 +37,39 @@ export default function PhoneForm({ onSubmitted, onBack }) {
         }
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
         const nextErrors = validate(values)
         setErrors(nextErrors)
         if (Object.keys(nextErrors).length > 0) return
 
         setSubmitting(true)
-        setTimeout(() => {
+        setServerError('')
+
+        try {
+            const response = await fetch(AUTH_ENDPOINTS.SIGNUP_PHONE, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    phone: values.phone,
+                    fullName: values.fullName,
+                }),
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                setServerError(data.msg || 'Failed to register. Please try again.')
+                return
+            }
+
+            // Pass token up so SignupPage can store it and navigate
+            onSubmitted({ phone: values.phone, token: data.token })
+        } catch {
+            setServerError('Unable to connect to server. Please try again.')
+        } finally {
             setSubmitting(false)
-            onSubmitted(values)
-        }, 700)
+        }
     }
 
     return (
@@ -122,12 +146,16 @@ export default function PhoneForm({ onSubmitted, onBack }) {
                     {errors.phone && <span className="mt-1 block text-xs text-red-500">{errors.phone}</span>}
                 </div>
 
+                {serverError && (
+                    <p className="text-xs text-red-500 font-medium text-center">{serverError}</p>
+                )}
+
                 <button
                     type="submit"
                     disabled={submitting}
                     className="mt-2 flex w-full items-center justify-center rounded-xl bg-[#2A2A2E] py-3 text-sm font-semibold text-white shadow-sm shadow-black/20 transition hover:bg-[#3A3A3E] disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                    {submitting ? 'Sending OTP…' : 'Continue'}
+                    {submitting ? 'Registering…' : 'Continue'}
                 </button>
             </form>
 

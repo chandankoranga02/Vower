@@ -118,18 +118,18 @@ const verifyOTP = async (req, res) => {
 
 const googleAuth = async (req, res) => {
   try {
-    const { idToken } = req.body;
+    const { accessToken } = req.body;
 
-    if (!idToken) {
+    if (!accessToken) {
       return res.status(400).json({
-        msg: "Google ID token is required",
+        msg: "Google access token is required",
       });
     }
 
     const deviceInfo = getDeviceInfo(req);
 
     const result = await googleAuthService({
-      idToken,
+      accessToken,
       ...deviceInfo,
     });
 

@@ -6,7 +6,7 @@ const loginEmail = async ({
   email,
   password,
 }) => {
-  const existingUser = await prisma.signupData.findUnique({
+  const existingUser = await prisma.signupdata.findUnique({
     where: { email },
   });
 

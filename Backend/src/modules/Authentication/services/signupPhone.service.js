@@ -14,7 +14,7 @@ const SignUpphone = async ({
 }) => {
  
   
-  const existingUser = await prisma.signupData.findUnique({
+  const existingUser = await prisma.signupdata.findUnique({
     where: { phone : phone },
   });
 
@@ -24,7 +24,7 @@ const SignUpphone = async ({
   // const saltRounds = 10;
   // const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  const user = await prisma.signupData.create({
+  const user = await prisma.signupdata.create({
     data: {
       phone : phone,
       full_name: fullName,

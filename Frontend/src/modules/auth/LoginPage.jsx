@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useGoogleAuth from './hooks/useGoogleAuth';
+import { AUTH_ENDPOINTS } from '../../apis/endpoints';
+import { setToken } from '../../utils/session';
 
 const EyeIcon = ({ className = "w-5 h-5" }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -25,32 +27,54 @@ const GoogleIcon = () => (
 );
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // Google Authentication — reuses existing hook & client ID
+  // Google Authentication — calls backend, stores JWT, navigates to home
   const googleLogin = useGoogleAuth({
-    onSuccess: (response) => {
-      console.log('Google Login Success:', response);
-
-      // TODO:
-      // Send Google token to backend
-      // Receive your backend JWT
-      // Store session
-      // Navigate to dashboard
+    onSuccess: ({ token }) => {
+      setToken(token);
+      navigate('/home', { replace: true });
     },
-    onError: (error) => {
-      console.error('Google Login Failed:', error);
+    onError: (errMsg) => {
+      setError(errMsg || 'Google sign-in failed. Please try again.');
     },
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login data:', formData);
+    setLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch(AUTH_ENDPOINTS.LOGIN_EMAIL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.msg || 'Login failed. Please check your credentials.');
+        return;
+      }
+
+      setToken(data.token);
+      navigate('/home', { replace: true });
+    } catch {
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -133,11 +157,17 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {/* Error message */}
+            {error && (
+              <p className="text-xs text-red-500 font-medium text-center px-1">{error}</p>
+            )}
+
             <button
               type="submit"
-              className="w-full py-4 mt-2 rounded-2xl bg-zinc-900 hover:bg-black text-white font-bold text-sm tracking-wide transition-all active:scale-[0.98] shadow-md cursor-pointer"
+              disabled={loading}
+              className="w-full py-4 mt-2 rounded-2xl bg-zinc-900 hover:bg-black text-white font-bold text-sm tracking-wide transition-all active:scale-[0.98] shadow-md cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Sign In
+              {loading ? 'Signing in…' : 'Sign In'}
             </button>
           </form>
 

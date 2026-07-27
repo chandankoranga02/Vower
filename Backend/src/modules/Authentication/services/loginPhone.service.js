@@ -2,7 +2,7 @@ const prisma = require("../../../config/prisma");
 const { generateToken } = require("../../../utils/jwt");
 
 const loginPhone = async ({ phone }) => {
-  const existingUser = await prisma.signupData.findUnique({
+  const existingUser = await prisma.signupdata.findUnique({
     where: { phone },
   });
 

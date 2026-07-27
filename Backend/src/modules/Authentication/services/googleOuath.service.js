@@ -1,28 +1,42 @@
 const prisma = require("../../../config/prisma");
-const googleClient = require("../../../config/googleOauth");
 const { generateToken } = require("../../../utils/jwt");
 
 const googleAuth = async ({
-  idToken,
+  accessToken,
   ipAddress,
   operatingSystem,
   deviceType,
   deviceName,
   browser,
 }) => {
-  if (!idToken) {
+  if (!accessToken) {
     return {
       code: 400,
-      msg: "Google ID token is required",
+      msg: "Google access token is required",
     };
   }
 
-  const ticket = await googleClient.verifyIdToken({
-    idToken,
-    audience: process.env.GOOGLE_CLIENT_ID,
-  });
+  // Fetch user profile from Google using the access token
+  let googleUser;
+  try {
+    const response = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
 
-  const payload = ticket.getPayload();
+    if (!response.ok) {
+      return {
+        code: 401,
+        msg: "Invalid or expired Google access token",
+      };
+    }
+
+    googleUser = await response.json();
+  } catch (err) {
+    return {
+      code: 401,
+      msg: "Failed to verify Google token",
+    };
+  }
 
   const {
     sub: googleId,
@@ -30,7 +44,7 @@ const googleAuth = async ({
     name: fullName,
     picture,
     email_verified: emailVerified,
-  } = payload;
+  } = googleUser;
 
   if (!email || !emailVerified) {
     return {
@@ -39,19 +53,22 @@ const googleAuth = async ({
     };
   }
 
-  let user = await prisma.signupData.findUnique({
+  // Check if user already exists by email or google_id
+  let user = await prisma.signupdata.findFirst({
     where: {
-      email,
+      OR: [{ email }, { google_id: googleId }],
     },
   });
 
   let isNewUser = false;
 
   if (!user) {
-    user = await prisma.signupData.create({
+    // New user — create account in DB
+    user = await prisma.signupdata.create({
       data: {
         email,
         full_name: fullName,
+        google_id: googleId,
         provider: "GOOGLE",
         ip_address: ipAddress,
         operating_system: operatingSystem,
@@ -62,6 +79,12 @@ const googleAuth = async ({
     });
 
     isNewUser = true;
+  } else if (!user.google_id) {
+    // Existing account (email/phone) — link their Google ID
+    user = await prisma.signupdata.update({
+      where: { user_id: user.user_id },
+      data: { google_id: googleId },
+    });
   }
 
   const token = generateToken({
@@ -71,7 +94,9 @@ const googleAuth = async ({
 
   return {
     code: 200,
-    msg: isNewUser ? "Google signup successful" : "Google login successful",
+    msg: isNewUser
+      ? "Account created successfully. Welcome to Vower!"
+      : "Signed in successfully. Welcome back!",
     token,
     user: {
       userId: user.user_id,

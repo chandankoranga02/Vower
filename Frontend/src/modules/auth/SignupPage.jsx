@@ -1,32 +1,27 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import BrandPanel from './components/BrandPanel.jsx'
 import MethodSelect from './components/MethodSelect.jsx'
 import SignupEmailPage from './components/SignupEmailForm.jsx'
 import PhoneForm from './components/PhoneForm.jsx'
 import OtpStep from './components/OtpStep.jsx'
 import useGoogleAuth from './hooks/useGoogleAuth'
+import { setToken } from '../../utils/session'
 
 export default function SignupPage() {
+  const navigate = useNavigate()
   const [step, setStep] = useState('method')
 
   // Store complete email signup data until OTP verification is complete
   const [emailSignupData, setEmailSignupData] = useState(null)
 
-  // Phone flow
-  const [phone, setPhone] = useState('')
 
   // Google Authentication
   const googleLogin = useGoogleAuth({
-    onSuccess: (response) => {
-      console.log('Google Login Success:', response)
-
-      // TODO:
-      // Send Google token to backend
-      // Receive your backend JWT
-      // Store session
-      // Navigate to dashboard
+    onSuccess: ({ token }) => {
+      setToken(token)
+      navigate('/home', { replace: true })
     },
-
     onError: (error) => {
       console.error('Google Login Failed:', error)
     },
@@ -98,17 +93,10 @@ export default function SignupPage() {
             onVerified={(data) => {
               console.log('Email signup completed:', data)
 
-              // Backend should return JWT here
-              console.log('JWT:', data.token)
-
-              // Signup information is no longer needed
+              // Store JWT and go to home
+              setToken(data.token)
               setEmailSignupData(null)
-
-              alert('Account created. Welcome to Vower!')
-
-              // Later:
-              // localStorage.setItem('token', data.token)
-              // navigate('/dashboard')
+              navigate('/home', { replace: true })
             }}
           />
         )
@@ -121,31 +109,10 @@ export default function SignupPage() {
         return (
           <PhoneForm
             onBack={() => setStep('method')}
-            onSubmitted={(values) => {
-              setPhone(values.phone)
-              setStep('phoneOtp')
-            }}
-          />
-        )
-
-      // -----------------------------------
-      // PHONE OTP
-      // -----------------------------------
-
-      case 'phoneOtp':
-        return (
-          <OtpStep
-            mode="phone"
-            contact={phone}
-
-            onBack={() => {
-              setStep('phoneForm')
-            }}
-
-            onVerified={(data) => {
-              console.log('Phone signup completed:', data)
-
-              alert('Account verified. Welcome to Vower!')
+            onSubmitted={({ phone: phoneNumber, token }) => {
+              // Phone signup completes in one step (no OTP) — store JWT and go home
+              setToken(token)
+              navigate('/home', { replace: true })
             }}
           />
         )

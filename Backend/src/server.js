@@ -13,7 +13,7 @@ const Authrouter = require("./modules/Authentication/auth.routes");
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin:  process.env.CLIENT_URL,
     credentials: true,
   }),
 );
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/auth", Authrouter);
-app.get("/", (req, res) => {
+app.get("/server", (req, res) => {
   res.send("Server is running 🚀");
 });
 
