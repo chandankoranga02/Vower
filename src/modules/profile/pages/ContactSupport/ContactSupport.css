@@ -1,0 +1,248 @@
+.contact-support-page {
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding-bottom: 80px;
+}
+
+.contact-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.contact-header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+.contact-content {
+  padding: 20px;
+}
+
+.support-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.support-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.support-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.support-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  flex-shrink: 0;
+  color: #ffffff;
+}
+
+.support-icon.phone {
+  background-color: #000000;
+}
+
+.support-icon.email {
+  background-color: #333333;
+}
+
+.support-icon.whatsapp {
+  background-color: #25D366;
+}
+
+.support-info {
+  flex: 1;
+}
+
+.support-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 4px 0;
+}
+
+.support-info p {
+  font-size: 14px;
+  color: #666666;
+  margin: 0 0 8px 0;
+}
+
+.support-hours {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #999999;
+}
+
+.action-button {
+  padding: 10px 20px;
+  background-color: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.action-button:hover {
+  background-color: #333333;
+  transform: scale(1.02);
+}
+
+.action-button.secondary {
+  background-color: #f5f5f5;
+  color: #000000;
+}
+
+.action-button.secondary:hover {
+  background-color: #e0e0e0;
+}
+
+.action-button.icon {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  color: #000000;
+}
+
+.action-button.icon:hover {
+  background-color: #e0e0e0;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.additional-info {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.additional-info h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 16px 0;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #333333;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-item strong {
+  color: #000000;
+}
+
+.quick-actions {
+  margin-bottom: 30px;
+}
+
+.quick-actions h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 16px 0;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.quick-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.quick-action-btn:hover {
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  border-color: #000000;
+}
+
+.quick-action-btn svg {
+  color: #000000;
+}
+
+.quick-action-btn span {
+  font-size: 13px;
+  font-weight: 500;
+  color: #000000;
+}
+
+@media (max-width: 768px) {
+  .contact-header {
+    padding: 16px;
+  }
+
+  .contact-content {
+    padding: 16px;
+  }
+
+  .support-card {
+    padding: 16px;
+  }
+
+  .action-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quick-action-btn {
+    padding: 16px;
+  }
+}
