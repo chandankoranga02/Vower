@@ -15,14 +15,32 @@ const ProfilePage = () => {
     };
 
     const handleMenuItemClick = (itemId) => {
-        // Future: navigate to sub-pages
-        console.log('Menu item tapped:', itemId);
+        const routes = {
+            'settings': '/settings',
+            'reservations': '/reservations',
+            'vehicle': '/vehicle',
+            'history': '/history',
+            'help': '/help',
+            'privacy': '/privacy',
+        };
+
+        if (routes[itemId]) {
+            navigate(routes[itemId]);
+        }
     };
 
     const handleTabChange = (tabId) => {
-        if (tabId === 'profile') return; // already here
-        // Future: navigate to other tabs
-        console.log('Tab changed:', tabId);
+        if (tabId === 'profile') return;
+        
+        const tabRoutes = {
+            'home': '/home',
+            'stations': '/stations',
+            'profile': '/profile',
+        };
+
+        if (tabRoutes[tabId]) {
+            navigate(tabRoutes[tabId]);
+        }
     };
 
     return (
