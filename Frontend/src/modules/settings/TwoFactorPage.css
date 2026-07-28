@@ -1,0 +1,213 @@
+.twofa-content {
+    padding: 24px 20px;
+}
+
+.twofa-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.twofa-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+    color: #000000;
+}
+
+.twofa-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 12px;
+}
+
+.twofa-description {
+    font-size: 14px;
+    color: #666666;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.twofa-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.twofa-status-label {
+    font-size: 14px;
+    color: #666666;
+}
+
+.twofa-status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.twofa-status-badge.enabled {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.twofa-status-badge.disabled {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.twofa-toggle-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.twofa-toggle-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: #333333;
+}
+
+.twofa-toggle {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    background-color: #e0e0e0;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    padding: 0;
+}
+
+.twofa-toggle.active {
+    background-color: #000000;
+}
+
+.twofa-toggle-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.twofa-toggle.active .twofa-toggle-knob {
+    transform: translateX(24px);
+}
+
+.twofa-info {
+    margin-top: 24px;
+    padding: 20px;
+    background-color: #fafafa;
+    border-radius: 12px;
+}
+
+.twofa-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 12px;
+}
+
+.twofa-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.twofa-info li {
+    font-size: 14px;
+    color: #666666;
+    padding: 8px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.twofa-info li:before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #000000;
+}
+
+.method-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.method-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background-color: #fafafa;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
+}
+
+.method-item:hover {
+    background-color: #f0f0f0;
+    border-color: #000000;
+}
+
+.method-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    color: #000000;
+}
+
+.method-info h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0 0 4px 0;
+}
+
+.method-info p {
+    font-size: 13px;
+    color: #666666;
+    margin: 0;
+}
+
+.twofa-dialog {
+    max-width: 400px;
+}
+
+.dialog-description {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 16px;
+}
+
+.otp-input {
+    width: 100%;
+    margin-top: 16px;
+}
