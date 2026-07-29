@@ -8,6 +8,7 @@ import HomePage from "../modules/home/home";
 import CommingSoon from "../components/commingsoon";
 import VehicleRegistration from "../modules/vehicle/vehicleRegistration"; 
 import VehicleProfilePage from "../modules/vehicle/vehicleProfile";
+  import VehicleProfileDetails from "../modules/vehicle/vehicleProfiledetails";
 
 import Layout from "../layout";
 
@@ -36,6 +37,8 @@ export default function Router() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/coming-soon" element={<CommingSoon />} />
+        
+       
          
          
 
@@ -50,8 +53,10 @@ export default function Router() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<EditProfilePage />} />
-          <Route path="/vehicle-registration" element={<VehicleRegistration />} />
+           <Route path="/vehicle-registration" element={<VehicleRegistration />} />
          <Route path="/vehicles" element={<VehicleProfilePage />} />
+         <Route path="/vehicle-D" element={<VehicleProfileDetails />} />
+         
          
           
 
