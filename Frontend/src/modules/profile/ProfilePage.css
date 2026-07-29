@@ -247,6 +247,21 @@
     user-select: none;
 }
 
+/* Disabled state for non-clickable items */
+.profile-menu__item--disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+.profile-menu__item--disabled:hover {
+    border-color: #eaeaea;
+    box-shadow: none;
+}
+
+.profile-menu__item--disabled:active {
+    transform: none;
+}
+
 .profile-menu__item:hover {
     border-color: #d5d5d5;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);

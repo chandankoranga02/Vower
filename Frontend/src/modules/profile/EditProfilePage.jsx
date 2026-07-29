@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     ArrowLeft,
@@ -11,25 +11,17 @@ import {
 } from 'lucide-react';
 import './EditProfilePage.css';
 
-// Simulated taken usernames
-const TAKEN_USERNAMES = ['rahulsharma', 'admin', 'user', 'test', 'vower', 'evcharger', 'johndoe', 'janedoe'];
-
 const EditProfilePage = () => {
     const navigate = useNavigate();
 
     // Form state
     const [form, setForm] = useState({
         fullName: 'Rahul Sharma',
-        username: 'rahulsharma',
         email: 'rahul.sharma@email.com',
         phone: '9876543210',
         dob: '1995-08-15',
     });
 
-    const [usernameStatus, setUsernameStatus] = useState('idle'); // idle | checking | available | taken
-    const usernameTimer = useRef(null);
-
-    const [countryCode] = useState('+91');
     const [errors, setErrors] = useState({});
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
@@ -41,36 +33,10 @@ const EditProfilePage = () => {
         'https://api.dicebear.com/9.x/initials/svg?seed=RS&backgroundColor=111111&textColor=ffffff'
     );
 
-    // ---- Username availability check (debounced) ----
-    useEffect(() => {
-        if (!form.username.trim()) {
-            setUsernameStatus('idle');
-            return;
-        }
-        setUsernameStatus('checking');
-        clearTimeout(usernameTimer.current);
-        usernameTimer.current = setTimeout(() => {
-            const normalized = form.username.toLowerCase().replace(/[^a-z0-9_]/g, '');
-            if (TAKEN_USERNAMES.includes(normalized)) {
-                setUsernameStatus('taken');
-            } else {
-                setUsernameStatus('available');
-            }
-        }, 800);
-        return () => clearTimeout(usernameTimer.current);
-    }, [form.username]);
-
     // ---- Validation ----
     const validate = useCallback(() => {
         const e = {};
         if (!form.fullName.trim()) e.fullName = 'Name cannot be empty';
-        if (!form.username.trim()) {
-            e.username = 'Username cannot be empty';
-        } else if (form.username.length < 3) {
-            e.username = 'Username must be at least 3 characters';
-        } else if (usernameStatus === 'taken') {
-            e.username = 'This username is not available';
-        }
         if (!form.email.trim()) {
             e.email = 'Email is required';
         } else if (!/\S+@\S+\.\S+/.test(form.email)) {
@@ -82,7 +48,7 @@ const EditProfilePage = () => {
             e.phone = 'Phone number too short';
         }
         return e;
-    }, [form, usernameStatus]);
+    }, [form]);
 
     // ---- Handlers ----
     const handleChange = (field, value) => {
@@ -178,9 +144,6 @@ const EditProfilePage = () => {
                     </span>
                 </div>
                 <h2 className="edit-avatar__name">{form.fullName || 'Your Name'}</h2>
-                <p className="edit-avatar__username">
-                    @{form.username || 'username'}
-                </p>
             </section>
 
             {/* Form */}
@@ -205,67 +168,6 @@ const EditProfilePage = () => {
                     {errors.fullName && (
                         <span className="edit-field__error">
                             <X size={12} /> {errors.fullName}
-                        </span>
-                    )}
-                </div>
-
-                {/* Username */}
-                <div className="edit-field">
-                    <label className="edit-field__label" htmlFor="edit-username">
-                        Username
-                    </label>
-                    <div className="edit-field__input-wrap">
-                        <span className="edit-field__input-prefix">@</span>
-                        <input
-                            id="edit-username"
-                            type="text"
-                            className={`edit-field__input edit-field__input--with-prefix ${errors.username || usernameStatus === 'taken'
-                                    ? 'edit-field__input--error'
-                                    : usernameStatus === 'available'
-                                        ? 'edit-field__input--success'
-                                        : ''
-                                }`}
-                            value={form.username}
-                            onChange={(e) =>
-                                handleChange(
-                                    'username',
-                                    e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, '')
-                                )
-                            }
-                            placeholder="yourusername"
-                            disabled={disabled}
-                            autoComplete="username"
-                            maxLength={30}
-                        />
-                        {usernameStatus === 'checking' && (
-                            <span className="edit-field__input-suffix">
-                                <Loader2 size={16} className="edit-field__spinner" />
-                            </span>
-                        )}
-                        {usernameStatus === 'available' && (
-                            <span className="edit-field__input-suffix edit-field__input-suffix--success">
-                                <Check size={16} />
-                            </span>
-                        )}
-                        {usernameStatus === 'taken' && (
-                            <span className="edit-field__input-suffix edit-field__input-suffix--error">
-                                <X size={16} />
-                            </span>
-                        )}
-                    </div>
-                    {errors.username && (
-                        <span className="edit-field__error">
-                            <X size={12} /> {errors.username}
-                        </span>
-                    )}
-                    {!errors.username && usernameStatus === 'taken' && (
-                        <span className="edit-field__error">
-                            <X size={12} /> This username is not available
-                        </span>
-                    )}
-                    {usernameStatus === 'available' && (
-                        <span className="edit-field__success">
-                            <Check size={12} /> Username is available
                         </span>
                     )}
                 </div>

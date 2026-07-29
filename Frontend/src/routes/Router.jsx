@@ -7,6 +7,7 @@ import EditProfilePage from "../modules/profile/EditProfilePage";
 import HomePage from "../modules/home/home";
 import CommingSoon from "../components/commingsoon";
 import SupportRoutes from "../modules/routes/SupportRoutes";
+import ProfileRoutes from "../modules/profile/routes/ProfileRoutes";
 
 import Layout from "../layout";
 
@@ -47,6 +48,7 @@ export default function Router() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<EditProfilePage />} />
+          <Route path="/profile/settings/*" element={<ProfileRoutes />} />
           <Route path="/support/*" element={<SupportRoutes />} />
         </Route>
 

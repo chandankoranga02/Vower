@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 const ProfileCard = ({
     name = 'Rahul Sharma',
-    username = '@rahulsharma',
     avatarUrl = 'https://api.dicebear.com/9.x/initials/svg?seed=RS&backgroundColor=111111&textColor=ffffff'
 }) => {
     const [imgLoaded, setImgLoaded] = useState(false);
@@ -24,7 +23,6 @@ const ProfileCard = ({
 
             {/* Info */}
             <h2 className="profile-card__name">{name}</h2>
-            <p className="profile-card__username">{username}</p>
 
             {/* Edit button */}
             <button

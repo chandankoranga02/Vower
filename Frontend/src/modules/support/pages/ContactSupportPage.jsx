@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Phone, Mail, MessageSquare, Clock, HelpCircle } from 'lucide-react';
+import { Phone, Mail, MessageSquare, Clock, HelpCircle, Search } from 'lucide-react';
 import './ContactSupportPage.css';
 
 const FAQS = [
@@ -148,24 +148,27 @@ const ContactSupportPage = () => {
                     </div>
                 </section>
 
-                {/* FAQs */}
+                {/* FAQs Section */}
                 <section className="faqs-section">
-                    <div className="faqs-header">
-                        <HelpCircle size={20} strokeWidth={2} />
-                        <h2 className="section-title">Frequently Asked Questions</h2>
+                    <h2 className="section-title">Frequently Asked Questions</h2>
+                    
+                    {/* Search Bar */}
+                    <div className="faqs-search-container">
+                        <Search size={20} strokeWidth={2} className="faqs-search-icon" />
+                        <input
+                            type="text"
+                            placeholder="Search FAQs..."
+                            value={faqSearch}
+                            onChange={(e) => setFaqSearch(e.target.value)}
+                            className="faqs-search"
+                        />
                     </div>
-
-                    <input
-                        type="text"
-                        placeholder="Search FAQs..."
-                        value={faqSearch}
-                        onChange={(e) => setFaqSearch(e.target.value)}
-                        className="faq-search"
-                    />
 
                     {filteredFaqs.length === 0 ? (
                         <div className="no-results">
+                            <HelpCircle size={48} strokeWidth={1.5} className="no-results-icon" />
                             <p>No FAQs found for "{faqSearch}"</p>
+                            <p className="no-results-subtitle">Try searching with different keywords</p>
                         </div>
                     ) : (
                         filteredFaqs.map((category, catIndex) => (
