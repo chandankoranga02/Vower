@@ -1,0 +1,345 @@
+/* ===== Contact Support Page Styles ===== */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.contact-support-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    animation: fadeIn 0.5s ease-out both;
+}
+
+.contact-support-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 16px 20px;
+    height: 56px;
+    flex-shrink: 0;
+}
+
+.contact-support-header__back {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    color: #111111;
+}
+
+.contact-support-header__back:active {
+    transform: translateY(-50%) scale(0.93);
+    background: #f5f5f5;
+}
+
+.contact-support-header__title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111111;
+    letter-spacing: -0.3px;
+}
+
+.contact-support-main {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111111;
+    margin: 0;
+}
+
+/* Contact Section */
+.contact-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contact-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-option {
+    display: flex;
+    align-items: center;
+    padding: 16px 18px;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    text-align: left;
+}
+
+.contact-option:hover {
+    border-color: #d5d5d5;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.contact-option:active {
+    transform: scale(0.985);
+}
+
+.contact-option--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.contact-option__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 14px;
+}
+
+.contact-option__icon--call {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.contact-option__icon--email {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.contact-option__icon--whatsapp {
+    background: #dcfce7;
+    color: #25D366;
+}
+
+.contact-option__icon--chat {
+    background: #f3e8ff;
+    color: #9333ea;
+}
+
+.contact-option__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.contact-option__title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111111;
+}
+
+.contact-option__subtitle {
+    font-size: 13px;
+    color: #8a8a8a;
+}
+
+.coming-soon-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: #f3e8ff;
+    color: #9333ea;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* Hours Section */
+.hours-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hours-card {
+    display: flex;
+    align-items: center;
+    padding: 16px 18px;
+    background: #fafafa;
+    border: 1px solid #eaeaea;
+    border-radius: 14px;
+}
+
+.hours-icon {
+    color: #111111;
+    margin-right: 14px;
+    flex-shrink: 0;
+}
+
+.hours-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.hours-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111111;
+    margin: 0;
+}
+
+.hours-text {
+    font-size: 14px;
+    color: #444444;
+    margin: 0;
+}
+
+.hours-emergency {
+    font-size: 13px;
+    color: #16a34a;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* FAQs Section */
+.faqs-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.faqs-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #111111;
+}
+
+.faq-search {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #111111;
+    background: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-search:focus {
+    outline: none;
+    border-color: #111111;
+    box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+}
+
+.no-results {
+    padding: 40px 20px;
+    text-align: center;
+    color: #8a8a8a;
+    font-size: 14px;
+}
+
+.faq-category {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 8px 0 4px;
+}
+
+.faq-item {
+    border: 1px solid #eaeaea;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq-item:hover {
+    border-color: #d5d5d5;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #111111;
+}
+
+.faq-chevron {
+    color: #a0a0a0;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 12px;
+}
+
+.faq-chevron--rotated {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 18px;
+    font-size: 14px;
+    color: #444444;
+    line-height: 1.6;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.faq-item--expanded .faq-answer {
+    max-height: 300px;
+    padding: 0 18px 16px;
+}
+
+@media (min-width: 768px) {
+    .contact-support-main {
+        max-width: 580px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .contact-support-header {
+        height: 64px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .contact-support-page {
+        max-width: 480px;
+        margin: 0 auto;
+        border-left: 1px solid #eaeaea;
+        border-right: 1px solid #eaeaea;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.04);
+    }
+}

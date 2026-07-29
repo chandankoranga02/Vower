@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { LoginPage, SignupPage, ForgotPasswordPage } from "../modules/auth";
@@ -6,6 +6,7 @@ import ProfilePage from "../modules/profile/ProfilePage";
 import EditProfilePage from "../modules/profile/EditProfilePage";
 import HomePage from "../modules/home/home";
 import CommingSoon from "../components/commingsoon";
+import SupportRoutes from "../modules/routes/SupportRoutes";
 
 import Layout from "../layout";
 
@@ -46,6 +47,7 @@ export default function Router() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<EditProfilePage />} />
+          <Route path="/support/*" element={<SupportRoutes />} />
         </Route>
 
         {/* Fallback */}
