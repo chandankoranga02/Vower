@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AUTH_ENDPOINTS  } from '../../apis/endpoints';
+import { useNavigate } from "react-router-dom";
+
+
+
 
 const EyeIcon = ({ className = "w-5 h-5" }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -21,7 +26,11 @@ const ArrowLeftIcon = ({ className = "w-4 h-4" }) => (
 );
 
 export default function ForgotPasswordPage() {
+  const navigate = useNavigate();
+
+
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -34,15 +43,91 @@ export default function ForgotPasswordPage() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleRequestOTP = (e) => {
+  const handleRequestOTP = async (e) => {
     e.preventDefault();
-    console.log('Sending OTP to:', formData.email);
-    setStep(2);
+    setLoading(true);
+    try {
+      const response = await fetch(AUTH_ENDPOINTS.SEND_RESET_PASSWORD_OTP, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.msg || "Failed to send OTP");
+      }
+      alert(data.msg);
+      setStep(2);
+    } catch (error) {
+      console.error("Send OTP Error:", error);
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleResetPassword = (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
-    console.log('Resetting password with:', formData);
+    setLoading(true);
+
+    try {
+      // ----------------------------
+      // 1. Verify OTP
+      // ----------------------------
+      const verifyResponse = await fetch(AUTH_ENDPOINTS.VERIFY_RESET_PASSWORD_OTP, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          otp: formData.otp,
+        }),
+      });
+
+      const verifyData = await verifyResponse.json();
+
+      if (!verifyResponse.ok) {
+        throw new Error(verifyData.msg || "OTP Verification Failed");
+      }
+
+      const verificationToken = verifyData.verificationToken;
+
+      // ----------------------------
+      // 2. Reset Password
+      // ----------------------------
+      const resetResponse = await fetch(AUTH_ENDPOINTS.RESET_PASSWORD, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.newPassword,
+          verificationToken,
+        }),
+      });
+
+      const resetData = await resetResponse.json();
+
+      if (!resetResponse.ok) {
+        throw new Error(resetData.msg || "Password Reset Failed");
+      }
+
+      alert("Password Reset Successfully");
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -97,9 +182,14 @@ export default function ForgotPasswordPage() {
 
               <button
                 type="submit"
-                className="w-full py-4 mt-2 rounded-2xl bg-zinc-900 hover:bg-black text-white font-bold text-sm tracking-wide transition-all active:scale-[0.98] shadow-md cursor-pointer"
+                disabled={loading}
+                className={`w-full py-4 mt-2 rounded-2xl bg-zinc-900 text-white font-bold text-sm tracking-wide transition-all shadow-md ${
+                  loading
+                    ? 'opacity-60 cursor-not-allowed'
+                    : 'hover:bg-black active:scale-[0.98] cursor-pointer'
+                }`}
               >
-                Send OTP Code
+                {loading ? 'Sending OTP...' : 'Send OTP Code'}
               </button>
             </form>
           ) : (
@@ -156,9 +246,14 @@ export default function ForgotPasswordPage() {
 
               <button
                 type="submit"
-                className="w-full py-4 mt-2 rounded-2xl bg-zinc-900 hover:bg-black text-white font-bold text-sm tracking-wide transition-all active:scale-[0.98] shadow-md cursor-pointer"
+                disabled={loading}
+                className={`w-full py-4 mt-2 rounded-2xl bg-zinc-900 text-white font-bold text-sm tracking-wide transition-all shadow-md ${
+                  loading
+                    ? 'opacity-60 cursor-not-allowed'
+                    : 'hover:bg-black active:scale-[0.98] cursor-pointer'
+                }`}
               >
-                Verify OTP & Save Password
+                {loading ? 'Verifying & Saving...' : 'Verify OTP & Save Password'}
               </button>
             </form>
           )}

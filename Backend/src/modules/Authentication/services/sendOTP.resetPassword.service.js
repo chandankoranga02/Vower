@@ -42,7 +42,7 @@ const SendOTP = async ({ email }) => {
   });
 
   const { data, error } = await resend.emails.send({
-    from: "Vower <no-reply@appnests.in>",
+    from: "Vower <no-reply@vower.in>",
     to: email,
     subject: "Resert Your password  - Vower",
     html: forgotPasswordOtpTemplate(otp),

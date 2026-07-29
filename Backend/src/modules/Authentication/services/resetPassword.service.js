@@ -3,7 +3,7 @@ const prisma = require("../../../config/prisma");
 const { generateToken } = require("../../../utils/jwt");
 const jwt = require('jsonwebtoken')
 
-const signUpEmail = async ({
+const resetPassword  = async ({
   email,
   password,
   verificationToken,
@@ -34,11 +34,11 @@ const signUpEmail = async ({
   // Token email and signup email must match
   if (
     verifiedData.email !== email ||
-    verifiedData.purpose !== "EMAIL_VERIFICATION"
+    verifiedData.purpose !== "RESET_PASSWORD"
   ) {
     return {
       code: 401,
-      msg: "Email verification failed",
+      msg: "Reset password failed ",
     };
   }
 
@@ -76,4 +76,4 @@ const existingUser = await prisma.signupdata.findUnique({
   };
 };
 
-module.exports = signUpEmail
+module.exports = resetPassword; 

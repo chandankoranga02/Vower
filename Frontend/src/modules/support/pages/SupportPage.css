@@ -1,0 +1,217 @@
+/* ===== Support Page Styles ===== */
+
+/* Page entry animation */
+@keyframes supportFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes supportSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---- Container ---- */
+.support-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+    animation: supportFadeIn 0.5s ease-out both;
+}
+
+/* ---- Header ---- */
+.support-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 16px 20px;
+    height: 56px;
+    flex-shrink: 0;
+}
+
+.support-header__back {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    color: #111111;
+}
+
+.support-header__back:active {
+    transform: translateY(-50%) scale(0.93);
+    background: #f5f5f5;
+}
+
+.support-header__title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111111;
+    letter-spacing: -0.3px;
+}
+
+/* ---- Main Content ---- */
+.support-main {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: supportSlideUp 0.5s ease-out 0.1s both;
+}
+
+/* ---- Support Cards ---- */
+.support-card {
+    display: flex;
+    align-items: center;
+    min-height: 88px;
+    padding: 20px 18px;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.support-card:hover {
+    border-color: #d5d5d5;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.support-card:active {
+    transform: scale(0.985);
+}
+
+/* Primary Card (Raise Ticket) */
+.support-card--primary {
+    background: linear-gradient(135deg, #111111 0%, #2a2a2a 100%);
+    border: none;
+    color: #ffffff;
+}
+
+.support-card--primary .support-card__title,
+.support-card--primary .support-card__description,
+.support-card--primary .support-card__arrow {
+    color: #ffffff;
+}
+
+.support-card__icon-wrap--primary {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+/* Icon Wrap */
+.support-card__icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: #f7f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #111111;
+    margin-right: 16px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.support-card:active .support-card__icon-wrap {
+    transform: scale(0.95);
+}
+
+/* Content */
+.support-card__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.support-card__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111111;
+    margin: 0;
+    letter-spacing: -0.2px;
+}
+
+.support-card__description {
+    font-size: 13px;
+    font-weight: 400;
+    color: #8a8a8a;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Arrow */
+.support-card__arrow {
+    color: #c0c0c0;
+    flex-shrink: 0;
+    margin-left: 12px;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.support-card:active .support-card__arrow {
+    transform: translateX(4px);
+}
+
+/* ---- Responsive ---- */
+@media (min-width: 768px) {
+    .support-main {
+        max-width: 580px;
+        margin: 0 auto;
+        width: 100%;
+        padding: 24px 20px;
+    }
+
+    .support-card {
+        min-height: 96px;
+        border-radius: 18px;
+    }
+
+    .support-header {
+        height: 64px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .support-page {
+        max-width: 480px;
+        margin: 0 auto;
+        border-left: 1px solid #eaeaea;
+        border-right: 1px solid #eaeaea;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.04);
+    }
+}
