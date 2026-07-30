@@ -1,7 +1,7 @@
 const cloudinary = require("../../../config/cloudinary");
 const prisma = require("../../../config/prisma");
 
-const uploadPhoto = async (file) => {
+const UploadPhoto = async (file , userId) => {
   const base64 = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
 
   const result = await cloudinary.uploader.upload(base64, {
@@ -15,7 +15,7 @@ const uploadPhoto = async (file) => {
       user_id: userId,
     },
     data: {
-      photo: imageUrl,
+      photo: imageURL,
     },
   });
 
@@ -24,4 +24,4 @@ const uploadPhoto = async (file) => {
   };
 };
 
-module.exports = uploadPhoto;
+module.exports = UploadPhoto;

@@ -34,34 +34,35 @@ const ProfileCard = () => {
       {/* Avatar */}
       <div className="profile-card__avatar-wrap">
         <img
-          src={user?.photo || "https://api.dicebear.com/9.x/initials/svg?seed=User"}
+          src={
+            user?.photo || "https://api.dicebear.com/9.x/initials/svg?seed=User"
+          }
           alt={user?.fullName}
           className={`profile-card__avatar ${imgLoaded ? "profile-card__avatar--loaded" : ""}`}
           onLoad={() => setImgLoaded(true)}
           draggable={false}
         />
-        <button
-          className="profile-card__camera"
-          aria-label="Change profile picture"
-        >
-          <Camera size={14} strokeWidth={2.4} />
-        </button>
       </div>
 
       {/* Info */}
-      <h2 className="profile-card__name">{user?.fullName || "Loading..."}</h2>
-      <p className="profile-card__username">@{user?.user_id || ""}</p>
+      <div className="flex flex-col items-center mt-2">
+        <h2 className="text-2xl font-semibold text-gray-900">
+          {user?.fullName || "Loading..."}
+        </h2>
 
-      {/* Edit button */}
-      <button
-        className="profile-card__edit-btn"
-        onClick={() => navigate("/profile/edit")}
-      >
-        Edit Profile
-      </button>
+        <p className="text-sm text-gray-500 mt-3 mb-5">
+          @{user?.user_id || "Loading..."}
+        </p>
+
+        <button
+          className="profile-card__edit-btn"
+          onClick={() => navigate("/profile/edit")}
+        >
+          Edit Profile
+        </button>
+      </div>
     </section>
   );
 };
 
 export default ProfileCard;
-

@@ -115,20 +115,26 @@
 
 /* Primary Card (Raise Ticket) */
 .support-card--primary {
-    background: linear-gradient(135deg, #111111 0%, #2a2a2a 100%);
-    border: none;
-    color: #ffffff;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    color: #111111;
 }
 
-.support-card--primary .support-card__title,
-.support-card--primary .support-card__description,
+.support-card--primary .support-card__title {
+    color: #111111;
+}
+
+.support-card--primary .support-card__description {
+    color: #8a8a8a;
+}
+
 .support-card--primary .support-card__arrow {
-    color: #ffffff;
+    color: #c0c0c0;
 }
 
 .support-card__icon-wrap--primary {
-    background: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
+    background: #f7f7f7;
+    color: #111111;
 }
 
 /* Icon Wrap */
@@ -184,6 +190,67 @@
 
 .support-card:active .support-card__arrow {
     transform: translateX(4px);
+}
+
+/* ---- FAQs Section ---- */
+.support-faqs-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px 18px;
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 16px;
+    animation: supportSlideUp 0.5s ease-out 0.2s both;
+}
+
+.support-faqs-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #111111;
+}
+
+.support-faqs-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111111;
+    margin: 0;
+    letter-spacing: -0.2px;
+}
+
+.support-faqs-description {
+    font-size: 13px;
+    font-weight: 400;
+    color: #8a8a8a;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.support-faqs-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 16px;
+    background: #f7f7f7;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #111111;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.support-faqs-button:hover {
+    background: #eeeeee;
+}
+
+.support-faqs-button:active {
+    transform: scale(0.98);
+    background: #e5e5e5;
 }
 
 /* ---- Responsive ---- */

@@ -6,7 +6,7 @@ const uploadService = require("./services/UploadPhoto.service");
 const getProfile = async (req, res) => {
     try {
         const userId = req.user.userId;
-        const result = await getProfileService.getProfile(userId);
+        const result = await getProfileService(userId);
 
         return res.status(200).json({
             success: true,
@@ -25,11 +25,13 @@ const getProfile = async (req, res) => {
     }
 };
 
+
+
 const updateProfile = async (req, res) => {
     try {
         const userId = req.user.userId;
         const bodyData = req.body;
-        const result = await EditProfileService.EditProfile(userId, bodyData);
+        const result = await EditProfileService(userId, bodyData);
 
         return res.status(200).json({
             success: true,
@@ -57,8 +59,8 @@ const uploadProfilePhoto = async (req, res) => {
         message: "No image uploaded",
       });
     }
-
-    const result = await uploadService.uploadPhoto(req.file);
+   const userId = req.user.userId;
+    const result = await uploadService(req.file , userId);
 
     return res.status(200).json({
       success: true,

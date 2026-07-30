@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+﻿import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Phone, Mail, MessageSquare, Clock, HelpCircle } from 'lucide-react';
 import './ContactSupportPage.css';
 
@@ -46,12 +45,18 @@ const FAQS = [
 
 const ContactSupportPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    
+    // Store the question string instead of an index for reliability
     const [expandedFaq, setExpandedFaq] = useState(null);
     const [faqSearch, setFaqSearch] = useState('');
 
     const handleBack = () => {
         navigate(-1);
     };
+
+    // React Router friendly path check
+    const isFAQsPage = location.pathname === '/support/faqs';
 
     const handleCall = () => {
         window.location.href = 'tel:+18001234567';
@@ -65,8 +70,8 @@ const ContactSupportPage = () => {
         window.open('https://wa.me/18001234567', '_blank');
     };
 
-    const toggleFaq = (index) => {
-        setExpandedFaq(expandedFaq === index ? null : index);
+    const toggleFaq = (questionText) => {
+        setExpandedFaq(expandedFaq === questionText ? null : questionText);
     };
 
     const filteredFaqs = FAQS.map(category => ({
@@ -85,69 +90,73 @@ const ContactSupportPage = () => {
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
                 </button>
-                <h1 className="contact-support-header__title">Contact Support</h1>
+                <h1 className="contact-support-header__title">{isFAQsPage ? 'FAQs' : 'Contact Support'}</h1>
             </header>
 
             <main className="contact-support-main">
-                {/* Contact Options */}
-                <section className="contact-section">
-                    <h2 className="section-title">Get in Touch</h2>
-                    
-                    <div className="contact-options">
-                        <button className="contact-option" onClick={handleCall}>
-                            <div className="contact-option__icon contact-option__icon--call">
-                                <Phone size={24} strokeWidth={2} />
-                            </div>
-                            <div className="contact-option__content">
-                                <span className="contact-option__title">Call Support</span>
-                                <span className="contact-option__subtitle">+1 (800) 123-4567</span>
-                            </div>
-                        </button>
+                {/* Contact Options - Only show on Contact Support page */}
+                {!isFAQsPage && (
+                    <section className="contact-section">
+                        <h2 className="section-title">Get in Touch</h2>
+                        
+                        <div className="contact-options">
+                            <button className="contact-option" onClick={handleCall}>
+                                <div className="contact-option__icon contact-option__icon--call">
+                                    <Phone size={24} strokeWidth={2} />
+                                </div>
+                                <div className="contact-option__content">
+                                    <span className="contact-option__title">Call Support</span>
+                                    <span className="contact-option__subtitle">+1 (800) 123-4567</span>
+                                </div>
+                            </button>
 
-                        <button className="contact-option" onClick={handleEmail}>
-                            <div className="contact-option__icon contact-option__icon--email">
-                                <Mail size={24} strokeWidth={2} />
-                            </div>
-                            <div className="contact-option__content">
-                                <span className="contact-option__title">Email Support</span>
-                                <span className="contact-option__subtitle">support@vower.com</span>
-                            </div>
-                        </button>
+                            <button className="contact-option" onClick={handleEmail}>
+                                <div className="contact-option__icon contact-option__icon--email">
+                                    <Mail size={24} strokeWidth={2} />
+                                </div>
+                                <div className="contact-option__content">
+                                    <span className="contact-option__title">Email Support</span>
+                                    <span className="contact-option__subtitle">support@vower.com</span>
+                                </div>
+                            </button>
 
-                        <button className="contact-option" onClick={handleWhatsApp}>
-                            <div className="contact-option__icon contact-option__icon--whatsapp">
-                                <MessageSquare size={24} strokeWidth={2} />
-                            </div>
-                            <div className="contact-option__content">
-                                <span className="contact-option__title">WhatsApp Support</span>
-                                <span className="contact-option__subtitle">Chat with us</span>
-                            </div>
-                        </button>
+                            <button className="contact-option" onClick={handleWhatsApp}>
+                                <div className="contact-option__icon contact-option__icon--whatsapp">
+                                    <MessageSquare size={24} strokeWidth={2} />
+                                </div>
+                                <div className="contact-option__content">
+                                    <span className="contact-option__title">WhatsApp Support</span>
+                                    <span className="contact-option__subtitle">Chat with us</span>
+                                </div>
+                            </button>
 
-                        <div className="contact-option contact-option--disabled">
-                            <div className="contact-option__icon contact-option__icon--chat">
-                                <MessageSquare size={24} strokeWidth={2} />
+                            <div className="contact-option contact-option--disabled">
+                                <div className="contact-option__icon contact-option__icon--chat">
+                                    <MessageSquare size={24} strokeWidth={2} />
+                                </div>
+                                <div className="contact-option__content">
+                                    <span className="contact-option__title">Live Chat</span>
+                                    <span className="contact-option__subtitle">Coming Soon</span>
+                                </div>
+                                <span className="coming-soon-badge">Soon</span>
                             </div>
-                            <div className="contact-option__content">
-                                <span className="contact-option__title">Live Chat</span>
-                                <span className="contact-option__subtitle">Coming Soon</span>
-                            </div>
-                            <span className="coming-soon-badge">Soon</span>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                )}
 
                 {/* Support Hours */}
-                <section className="hours-section">
-                    <div className="hours-card">
-                        <Clock size={20} strokeWidth={2} className="hours-icon" />
-                        <div className="hours-content">
-                            <h3 className="hours-title">Support Hours</h3>
-                            <p className="hours-text">Monday - Sunday: 24/7</p>
-                            <p className="hours-emergency">Emergency charging helpline always available</p>
+                {!isFAQsPage && (
+                    <section className="hours-section">
+                        <div className="hours-card">
+                            <Clock size={20} strokeWidth={2} className="hours-icon" />
+                            <div className="hours-content">
+                                <h3 className="hours-title">Support Hours</h3>
+                                <p className="hours-text">Monday - Sunday: 24/7</p>
+                                <p className="hours-emergency">Emergency charging helpline always available</p>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                )}
 
                 {/* FAQs */}
                 <section className="faqs-section">
@@ -173,12 +182,12 @@ const ContactSupportPage = () => {
                             <div key={catIndex} className="faq-category">
                                 <h3 className="category-title">{category.category}</h3>
                                 {category.questions.map((faq, faqIndex) => {
-                                    const globalIndex = `${catIndex}-${faqIndex}`;
+                                    const isExpanded = expandedFaq === faq.q;
                                     return (
                                         <div
                                             key={faqIndex}
-                                            className={`faq-item ${expandedFaq === globalIndex ? 'faq-item--expanded' : ''}`}
-                                            onClick={() => toggleFaq(globalIndex)}
+                                            className={`faq-item ${isExpanded ? 'faq-item--expanded' : ''}`}
+                                            onClick={() => toggleFaq(faq.q)}
                                         >
                                             <div className="faq-question">
                                                 <span>{faq.q}</span>
@@ -191,7 +200,7 @@ const ContactSupportPage = () => {
                                                     strokeWidth="2" 
                                                     strokeLinecap="round" 
                                                     strokeLinejoin="round"
-                                                    className={`faq-chevron ${expandedFaq === globalIndex ? 'faq-chevron--rotated' : ''}`}
+                                                    className={`faq-chevron ${isExpanded ? 'faq-chevron--rotated' : ''}`}
                                                 >
                                                     <path d="M6 9l6 6 6-6"/>
                                                 </svg>

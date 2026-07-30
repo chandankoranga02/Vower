@@ -11,6 +11,7 @@ const getProfile = async (userId) => {
       user_id: true,
       photo: true,
       phone: true,
+      dob: true,
     },
   });
 
@@ -27,6 +28,4 @@ const getProfile = async (userId) => {
   };
 };
 
-module.exports = {
-  getProfile,
-};
+module.exports = getProfile;

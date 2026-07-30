@@ -3,701 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VOWER | Next-Gen EV Stations & Aggregator</title>
-    <style>
-        /* CSS Variables */
-        :root {
-            --bg-color: #050505;
-            --text-main: #ffffff;
-            --text-muted: #999999;
-            --accent-glow: rgba(255, 255, 255, 0.15);
-            --card-bg: rgba(20, 20, 20, 0.7);
-            --electric-green: #00ff88;
-            --danger-red: #ff3355;
-            --vower-blue: #00c3ff;
-        }
+    <title>VOWER | EV Production Prep</title>
 
-        /* Base Reset */
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+        body, html {
+            height: 100%;
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #000000;
+            background-image: url('gpt_vower.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            background-size: cover;
+            color: #ffffff;
+            overflow: hidden;
         }
 
-        /* Fixed Background Canvas */
-        #energy-canvas {
-            position: fixed;
+        .overlay {
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            opacity: 0.5;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 70%, rgba(0,0,0,0.95) 100%),
+                linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.8) 100%);
+            z-index: 1;
         }
 
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            padding: 2.5rem 3.5rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .top-left-brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-left-logo-crop {
+            width: 220px; 
+            height: 80px; 
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
             justify-content: center;
+        }
+
+        .top-left-logo-crop img {
+            position: absolute;
+            width: 280px;
+            height: auto;
+            object-fit: cover;
+            filter: invert(1) grayscale(100%) brightness(200%); 
+        }
+
+        .top-right-socials {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .top-right-socials a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: transform 0.3s ease, color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .top-right-socials a:hover {
+            color: #ffffff;
+            transform: translateY(-2px);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }
+
+        .top-right-socials svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .center-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             text-align: center;
-            padding: 2rem;
-            position: relative;
+            width: 100%;
         }
 
-        .logo-container {
-            margin-bottom: 2rem;
-            animation: float 4s ease-in-out infinite;
-            transform-style: preserve-3d;
+        .coming-soon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
         }
 
-        .logo {
-            width: 160px;
-            height: 160px;
-            object-fit: contain;
-            filter: drop-shadow(0 0 25px var(--accent-glow));
-            animation: pulseGlow 3s infinite alternate;
-        }
-
-        .brand-name {
-            font-size: 5rem;
-            letter-spacing: 15px;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
+        .coming-soon-container span {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4.5vw; 
             font-weight: 300;
-            opacity: 0;
-            animation: fadeUp 1s ease-out 0.5s forwards;
-            text-shadow: 0 0 20px rgba(255,255,255,0.2);
-        }
-
-        .hero-tagline {
-            font-size: 1.3rem;
-            color: var(--text-muted);
-            margin-bottom: 3rem;
-            max-width: 700px;
-            line-height: 1.6;
-            opacity: 0;
-            animation: fadeUp 1s ease-out 0.8s forwards;
-        }
-
-        /* Coming Soon Banner */
-        .coming-soon-wrapper {
-            position: relative;
-            opacity: 0;
-            animation: fadeUp 1s ease-out 1.1s forwards;
-        }
-
-        .coming-soon {
-            font-size: 1.2rem;
-            letter-spacing: 4px;
-            padding: 15px 40px;
-            border: 1px solid var(--text-main);
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-            background: rgba(255, 255, 255, 0.05);
+            letter-spacing: 0.3rem;
+            line-height: 1;
             text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-
-        .coming-soon::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: shine 3s infinite;
-        }
-
-        /* Features Section (3D Cards) */
-        .content-section {
-            padding: 4rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
-            perspective: 1000px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 3rem 2rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
             text-align: center;
-            backdrop-filter: blur(10px);
-            transform-style: preserve-3d;
-            transition: transform 0.1s ease-out;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            opacity: 0;
-            transform: translateY(50px);
         }
 
-        .card.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-
-        .card-inner {
-            transform: translateZ(50px);
-            pointer-events: none;
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
-        }
-
-        .card h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .card p {
-            color: var(--text-muted);
-            line-height: 1.6;
-            font-size: 1.05rem;
-        }
-
-        /* Game Section Container */
-        .game-section {
-            padding: 4rem 2rem 8rem 2rem;
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-            perspective: 1000px;
-        }
-
-        .game-card {
-            background: rgba(15, 15, 15, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-            position: relative;
-        }
-
-        .game-card h2 {
-            font-size: 2rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-        }
-
-        .game-card p {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
-
-        /* Wider canvas for side-scroller */
-        .game-container {
-            position: relative;
+        main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
             width: 100%;
-            height: 400px;
-            margin: 0 auto;
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            border-radius: 12px;
-            overflow: hidden;
-            background: #080808;
-            box-shadow: inset 0 0 30px rgba(0, 255, 136, 0.05);
         }
 
-        #game-canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-            cursor: pointer;
-        }
-
-        /* Overlay UI inside Game */
-        .game-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+        .bottom-left {
+            text-align: left;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            backdrop-filter: blur(3px);
+            gap: 0.6rem;
+            max-width: 420px;
         }
 
-        .btn-play {
-            padding: 12px 40px;
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-            color: var(--electric-green);
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--electric-green);
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .tagline {
+            font-size: 1.25rem;
+            letter-spacing: 0.15rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.85);
             text-transform: uppercase;
-            margin-top: 1rem;
+            line-height: 1.4;
         }
 
-        .btn-play:hover {
-            background: var(--electric-green);
-            color: #000;
-            box-shadow: 0 0 20px var(--electric-green);
+        .helper-text {
+            font-size: 0.75rem;
+            line-height: 1.5;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.55);
+            letter-spacing: 0.05rem;
         }
 
-        .mobile-instructions {
-            margin-top: 1rem;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            letter-spacing: 1px;
+        .bottom-right {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.8rem;
         }
 
-        /* Animations */
-        @keyframes float {
-            0% { transform: translateY(0px) rotateX(0deg); }
-            50% { transform: translateY(-15px) rotateX(4deg); }
-            100% { transform: translateY(0px) rotateX(0deg); }
-        }
-
-        @keyframes pulseGlow {
-            0% { filter: drop-shadow(0 0 10px rgba(255,255,255,0.05)); }
-            100% { filter: drop-shadow(0 0 35px rgba(255,255,255,0.4)); }
-        }
-
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes shine {
-            0% { left: -100%; }
-            20% { left: 100%; }
-            100% { left: 100%; }
+        .prep-phase {
+            font-size: 0.7rem;
+            letter-spacing: 0.4rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
         }
 
         @media (max-width: 768px) {
-            .brand-name { font-size: 3rem; letter-spacing: 8px; }
-            .content-section { grid-template-columns: 1fr; }
-            .game-container { height: 300px; }
+            body { overflow-y: auto; }
+            .container { padding: 1.5rem; }
+            .coming-soon-container span { font-size: 2.2rem; letter-spacing: 0.15rem; }
+            main { flex-direction: column; align-items: center; gap: 2rem; }
+            .bottom-left, .bottom-right { align-items: center; text-align: center; max-width: 100%; }
         }
     </style>
 </head>
 <body>
+    <div class="overlay"></div>
 
-    <!-- Persistent Electric Particle Background -->
-    <canvas id="energy-canvas"></canvas>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="logo-container">
-            <img src="./logo.jpeg" alt="Vower Logo" class="logo">
-        </div>
-        
-        <h1 class="brand-name">Vower</h1>
-        <p class="hero-tagline">
-            Empowering the future of mobility. Navigate nearby charging stations seamlessly or deploy our custom high-performance EV charging hardware.
-        </p>
-        
-        <div class="coming-soon-wrapper">
-            <div class="coming-soon">Coming Soon</div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="content-section">
-        <div class="card reveal-on-scroll">
-            <div class="card-inner">
-                <div class="card-icon">🗺️</div>
-                <h2>Station Aggregator App</h2>
-                <p>Locate, reserve, and navigate to the nearest EV charging stations in real-time. Our intelligent network unifies chargers across all brands into a single app.</p>
-            </div>
-        </div>
-
-        <div class="card reveal-on-scroll">
-            <div class="card-inner">
-                <div class="card-icon">⚡</div>
-                <h2>Custom Charging Stations</h2>
-                <p>We manufacture custom, sleek EV charging stations for residential and commercial spaces. Engineered for maximum speed, durability, and unbeatable affordability.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Game Section -->
-    <section class="game-section reveal-on-scroll">
-        <div class="game-card">
-            <h2>Vower: HyperDrive</h2>
-            <p>Tap or press Spacebar to jump. Dodge the toxic fossil-fuel barrels and collect Vower Energy Cores to charge up!</p>
-            
-            <div class="game-container">
-                <div id="game-overlay" class="game-overlay">
-                    <h3 id="game-title" style="letter-spacing: 2px; font-size: 1.5rem; color: #fff;">SYSTEM READY</h3>
-                    <button class="btn-play" onclick="startGame()">INITIATE DRIVE</button>
-                    <p class="mobile-instructions">Click / Tap / Spacebar to Jump</p>
+    <div class="container">
+        <header>
+            <div class="top-left-brand">
+                <div class="top-left-logo-crop">
+                    <img src="WORDLOGON.png" alt="VOWER Logo">
                 </div>
-                <!-- Internal logical size 800x400 for side scroller -->
-                <canvas id="game-canvas" width="800" height="400"></canvas>
+            </div>
+            <div class="top-right-socials">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X">
+                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </a>
+            </div>
+        </header>
+
+        <div class="center-logo">
+            <div class="coming-soon-container">
+                <span>COMING<br>SOON</span>
             </div>
         </div>
-    </section>
 
-    <!-- JavaScript Logic -->
-    <script>
-        /* ==========================================================
-           1. Background Particle System (Kept from previous)
-        ========================================================== */
-        const bgCanvas = document.getElementById('energy-canvas');
-        const bgCtx = bgCanvas.getContext('2d');
-        let width, height, particles = [];
-
-        function resizeBg() {
-            width = bgCanvas.width = window.innerWidth;
-            height = bgCanvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeBg);
-        resizeBg();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.8;
-                this.vy = (Math.random() - 0.5) * 0.8;
-                this.size = Math.random() * 2;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                if (this.x < 0) this.x = width;
-                if (this.x > width) this.x = 0;
-                if (this.y < 0) this.y = height;
-                if (this.y > height) this.y = 0;
-            }
-            draw() {
-                bgCtx.beginPath();
-                bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                bgCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-                bgCtx.fill();
-            }
-        }
-
-        for (let i = 0; i < 90; i++) particles.push(new Particle());
-
-        function animateBg() {
-            bgCtx.clearRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
+        <main>
+            <div class="bottom-left">
+                <p class="tagline">The Future of EV Charging, Connected in One Platform</p>
+                <p class="helper-text">Connecting EV drivers with a unified network of charging stations and providers for a seamless, reliable, and smarter charging experience.</p>
+            </div>
             
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 130) {
-                        bgCtx.beginPath();
-                        bgCtx.moveTo(particles[i].x, particles[i].y);
-                        bgCtx.lineTo(particles[j].x, particles[j].y);
-                        bgCtx.strokeStyle = `rgba(255, 255, 255, ${(1 - dist/130) * 0.15})`;
-                        bgCtx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animateBg);
-        }
-        animateBg();
+            <div class="bottom-right">
+                <p class="prep-phase">PRODUCTION PREP /// 2026</p>
+            </div>
+        </main>
+    </div>
 
-        /* ==========================================================
-           2. 3D Card Tilt & Scroll Animations
-        ========================================================== */
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width/2;
-                const y = e.clientY - rect.top - rect.height/2;
-                card.style.transform = `perspective(1000px) rotateX(${-y/12}deg) rotateY(${x/12}deg) scale3d(1.02, 1.02, 1.02)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)`;
-            });
-        });
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
-        }, { threshold: 0.15 });
-
-        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
-
-        /* ==========================================================
-           3. Mini-Game: Vower HyperDrive (Side Scroller)
-        ========================================================== */
-        const gCanvas = document.getElementById('game-canvas');
-        const gCtx = gCanvas.getContext('2d');
-        const overlay = document.getElementById('game-overlay');
-        const gameTitle = document.getElementById('game-title');
-
-        let gameState = 'START'; 
-        let score = 0;
-        let battery = 100;
-        let gameLoopId;
-        let frameCount = 0;
-        let gameSpeed = 5;
-
-        // Ground level
-        const groundY = 320;
-
-        // Player (EV)
-        const player = {
-            x: 100,
-            y: groundY,
-            width: 50,
-            height: 25,
-            dy: 0,
-            gravity: 0.6,
-            jumpPower: -12,
-            isGrounded: true
-        };
-
-        let entities = [];
-        let trailParticles = [];
-
-        // Jump Controls
-        function jump() {
-            if (gameState === 'PLAYING' && player.isGrounded) {
-                player.dy = player.jumpPower;
-                player.isGrounded = false;
-            }
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' || e.code === 'ArrowUp') {
-                e.preventDefault();
-                jump();
-            }
-        });
-        gCanvas.addEventListener('mousedown', jump);
-        gCanvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); });
-
-        function spawnEntity() {
-            // Randomly spawn a hazard (red barrel) or energy (green core)
-            const type = Math.random() > 0.4 ? 'hazard' : 'energy';
-            
-            entities.push({
-                x: gCanvas.width,
-                y: type === 'hazard' ? groundY - 5 : groundY - 40 - Math.random() * 60,
-                width: type === 'hazard' ? 25 : 20,
-                height: type === 'hazard' ? 35 : 20,
-                type: type,
-                passed: false
-            });
-        }
-
-        function createTrailParticle() {
-            trailParticles.push({
-                x: player.x,
-                y: player.y + player.height / 2 + (Math.random() * 10 - 5),
-                size: Math.random() * 4 + 2,
-                life: 1,
-                decay: 0.05
-            });
-        }
-
-        function startGame() {
-            gameState = 'PLAYING';
-            overlay.style.display = 'none';
-            score = 0;
-            battery = 100;
-            gameSpeed = 6;
-            entities = [];
-            trailParticles = [];
-            player.y = groundY;
-            player.dy = 0;
-            if (gameLoopId) cancelAnimationFrame(gameLoopId);
-            updateGame();
-        }
-
-        function gameOver() {
-            gameState = 'GAMEOVER';
-            overlay.style.display = 'flex';
-            gameTitle.innerHTML = `<span style="color:var(--danger-red)">SYSTEM FAILURE</span><br><span style="font-size:1rem; color:#fff;">DISTANCE: ${Math.floor(score)}m</span>`;
-            document.querySelector('.btn-play').innerText = "RESTART DRIVE";
-        }
-
-        function updateGame() {
-            if (gameState !== 'PLAYING') return;
-            frameCount++;
-
-            // Clear Screen
-            gCtx.fillStyle = '#0a0a0a';
-            gCtx.fillRect(0, 0, gCanvas.width, gCanvas.height);
-
-            // Draw Background Grid (Synthwave style)
-            gCtx.strokeStyle = 'rgba(0, 255, 136, 0.1)';
-            gCtx.lineWidth = 1;
-            gCtx.beginPath();
-            // Horizontal moving ground lines
-            for(let i = 0; i < 5; i++) {
-                let yPos = groundY + i * 20;
-                gCtx.moveTo(0, yPos);
-                gCtx.lineTo(gCanvas.width, yPos);
-            }
-            gCtx.stroke();
-            
-            // Solid Ground Line
-            gCtx.strokeStyle = 'var(--vower-blue)';
-            gCtx.lineWidth = 3;
-            gCtx.shadowColor = 'var(--vower-blue)';
-            gCtx.shadowBlur = 15;
-            gCtx.beginPath();
-            gCtx.moveTo(0, groundY + player.height);
-            gCtx.lineTo(gCanvas.width, groundY + player.height);
-            gCtx.stroke();
-            gCtx.shadowBlur = 0; // Reset
-
-            // Physics Update
-            player.dy += player.gravity;
-            player.y += player.dy;
-
-            if (player.y >= groundY) {
-                player.y = groundY;
-                player.dy = 0;
-                player.isGrounded = true;
-            }
-
-            // Particles
-            if (frameCount % 2 === 0) createTrailParticle();
-            for (let i = trailParticles.length - 1; i >= 0; i--) {
-                let p = trailParticles[i];
-                p.x -= gameSpeed;
-                p.life -= p.decay;
-                
-                if (p.life <= 0) {
-                    trailParticles.splice(i, 1);
-                } else {
-                    gCtx.fillStyle = `rgba(0, 195, 255, ${p.life})`;
-                    gCtx.beginPath();
-                    gCtx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-                    gCtx.fill();
-                }
-            }
-
-            // Draw Player (Sleek Polygon)
-            gCtx.fillStyle = '#ffffff';
-            gCtx.shadowColor = '#00c3ff';
-            gCtx.shadowBlur = 10;
-            gCtx.beginPath();
-            gCtx.moveTo(player.x, player.y + player.height);
-            gCtx.lineTo(player.x + 10, player.y);
-            gCtx.lineTo(player.x + player.width, player.y + 10);
-            gCtx.lineTo(player.x + player.width - 5, player.y + player.height);
-            gCtx.closePath();
-            gCtx.fill();
-            gCtx.shadowBlur = 0;
-
-            // Spawn Entities
-            if (frameCount % Math.floor(Math.random() * 60 + 60) === 0) {
-                spawnEntity();
-            }
-
-            // Drain Battery
-            battery -= 0.05;
-            score += 0.1; // Distance score
-            gameSpeed = 6 + (score / 100); // Slowly speed up
-
-            if (battery <= 0) {
-                battery = 0;
-                gameOver();
-                return;
-            }
-
-            // Entity Logic
-            for (let i = entities.length - 1; i >= 0; i--) {
-                let ent = entities[i];
-                ent.x -= gameSpeed;
-
-                // Draw Entities
-                if (ent.type === 'hazard') {
-                    // Toxic Barrel
-                    gCtx.fillStyle = 'var(--danger-red)';
-                    gCtx.shadowColor = 'var(--danger-red)';
-                    gCtx.shadowBlur = 15;
-                    gCtx.fillRect(ent.x, ent.y, ent.width, ent.height);
-                    gCtx.fillStyle = '#fff';
-                    gCtx.font = '10px Arial';
-                    gCtx.fillText('☠', ent.x + 5, ent.y + 20);
-                } else {
-                    // Energy Core
-                    gCtx.fillStyle = 'var(--electric-green)';
-                    gCtx.shadowColor = 'var(--electric-green)';
-                    gCtx.shadowBlur = 15;
-                    gCtx.beginPath();
-                    gCtx.arc(ent.x + ent.width/2, ent.y + ent.height/2, ent.width/2, 0, Math.PI*2);
-                    gCtx.fill();
-                    gCtx.fillStyle = '#000';
-                    gCtx.font = '12px Arial';
-                    gCtx.fillText('V', ent.x + 6, ent.y + 14);
-                }
-                gCtx.shadowBlur = 0;
-
-                // Collision Detection
-                if (
-                    player.x < ent.x + ent.width &&
-                    player.x + player.width > ent.x &&
-                    player.y < ent.y + ent.height &&
-                    player.y + player.height > ent.y
-                ) {
-                    if (ent.type === 'hazard') {
-                        battery -= 20; // Big penalty
-                        player.dy = -4; // Knockback effect visual
-                    } else {
-                        battery = Math.min(100, battery + 15);
-                        score += 10;
-                    }
-                    entities.splice(i, 1);
-                    continue;
-                }
-
-                // Remove off screen
-                if (ent.x + ent.width < 0) {
-                    entities.splice(i, 1);
-                }
-            }
-
-            // UI (HUD)
-            gCtx.fillStyle = '#fff';
-            gCtx.font = 'bold 16px Courier New';
-            gCtx.fillText(`DIST: ${Math.floor(score)}m`, 20, 30);
-            
-            // Battery Bar
-            gCtx.fillStyle = 'rgba(255,255,255,0.2)';
-            gCtx.fillRect(gCanvas.width - 170, 15, 150, 15);
-            gCtx.fillStyle = battery > 25 ? 'var(--electric-green)' : 'var(--danger-red)';
-            gCtx.fillRect(gCanvas.width - 170, 15, (battery / 100) * 150, 15);
-            gCtx.fillStyle = '#fff';
-            gCtx.font = '12px Courier New';
-            gCtx.fillText(`PWR`, gCanvas.width - 205, 27);
-
-            gameLoopId = requestAnimationFrame(updateGame);
-        }
-    </script>
 </body>
 </html>

@@ -24,9 +24,9 @@ const EditProfile = async (userId, bodyData) => {
   if (bodyData.photo !== undefined)
     updateData.photo = bodyData.photo;
 
-  if (bodyData.dob !== undefined)
-    updateData.dob = bodyData.dob;
-
+ if (bodyData.dob !== undefined && bodyData.dob !== "") {
+  updateData.dob = new Date(bodyData.dob);
+}
   const data = await prisma.user.update({
     where: {
       user_id: userId,

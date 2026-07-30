@@ -24,8 +24,8 @@ const signUpEmail = async (req, res) => {
     if (result.token) {
       res.cookie("vower", result.token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
     }
@@ -69,8 +69,8 @@ const loginEmail = async (req, res) => {
     if (result.token) {
       res.cookie("vower", result.token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        secure: true,
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
     }
@@ -148,8 +148,8 @@ const googleAuth = async (req, res) => {
 
     res.cookie("vower", result.token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -169,8 +169,8 @@ const googleAuth = async (req, res) => {
 const logout = async (req, res) => {
   res.clearCookie("vower", {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
   });
 
   return res.status(200).json({

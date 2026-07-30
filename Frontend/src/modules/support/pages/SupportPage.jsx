@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Ticket, FileText, Phone, MessageCircle, HelpCircle } from 'lucide-react';
+import { Ticket, FileText, Phone, HelpCircle } from 'lucide-react';
 import './SupportPage.css';
 
 const SupportPage = () => {
@@ -16,10 +16,6 @@ const SupportPage = () => {
 
     const handleContactSupport = () => {
         navigate('/support/contact');
-    };
-
-    const handleFAQs = () => {
-        navigate('/support/faqs');
     };
 
     const handleBack = () => {
@@ -96,22 +92,24 @@ const SupportPage = () => {
                     </div>
                 </div>
 
-                {/* FAQs */}
-                <div className="support-card" onClick={handleFAQs}>
-                    <div className="support-card__icon-wrap">
+                {/* FAQs Section - Inline on Help Page */}
+                <div className="support-faqs-section">
+                    <div className="support-faqs-header">
                         <HelpCircle size={24} strokeWidth={2} />
+                        <h2 className="support-faqs-title">Frequently Asked Questions</h2>
                     </div>
-                    <div className="support-card__content">
-                        <h2 className="support-card__title">FAQs</h2>
-                        <p className="support-card__description">
-                            Find answers to commonly asked questions about charging, payments, and more
-                        </p>
-                    </div>
-                    <div className="support-card__arrow">
+                    <p className="support-faqs-description">
+                        Find answers to commonly asked questions about charging, payments, and more
+                    </p>
+                    <button 
+                        className="support-faqs-button"
+                        onClick={() => navigate('/support/faqs')}
+                    >
+                        View All FAQs
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M9 18l6-6-6-6"/>
                         </svg>
-                    </div>
+                    </button>
                 </div>
             </main>
         </div>
