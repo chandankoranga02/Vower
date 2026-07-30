@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const prisma = require("../../../config/prisma");
 const { generateToken } = require("../../../utils/jwt");
 const jwt = require('jsonwebtoken')
+const generateID = require("../../../utils/IDgenerator")
 
 const signUpEmail = async ({
   email,
@@ -56,13 +57,15 @@ const signUpEmail = async ({
   if (existingUser) {
     return { code: 409, msg: "user Already exists " };
   }
-
+  const userID = generateID("US");
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  const user = await prisma.signupdata.create({
+const [, appUser] = await prisma.$transaction([
+  prisma.signupdata.create({
     data: {
-      email: email,
+      user_id: userID,
+      email,
       full_name: fullName,
       password_hash: hashedPassword,
       provider: "EMAIL",
@@ -70,13 +73,23 @@ const signUpEmail = async ({
       operating_system: operatingSystem,
       device_type: deviceType,
       device_name: deviceName,
-      browser: browser,
+      browser,
     },
-  });
+  }),
+
+  prisma.user.create({
+    data: {
+      user_id: userID,
+      fullName,
+      email,
+      provider: "EMAIL",
+    },
+  }),
+]);
 
   const token = generateToken({
-    userId: user.user_id,
-    provider: user.provider,
+    userId: appUser.user_id,
+    provider: appUser.provider,
   });
 
   return {

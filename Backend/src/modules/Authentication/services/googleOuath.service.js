@@ -1,5 +1,6 @@
 const prisma = require("../../../config/prisma");
 const { generateToken } = require("../../../utils/jwt");
+const generateUserId = require("../../../utils/IDgenerator");
 
 const googleAuth = async ({
   accessToken,
@@ -65,30 +66,69 @@ const googleAuth = async ({
 
   let isNewUser = false;
 
+  const userId = generateUserId("US");
+
   if (!user) {
     // New user — create account in DB
-    user = await prisma.signupdata.create({
-      data: {
-        email,
-        full_name: fullName,
-        google_id: googleId,
-        provider: "GOOGLE",
-        ip_address: ipAddress,
-        operating_system: operatingSystem,
-        device_type: deviceType,
-        device_name: deviceName,
-        browser,
-      },
-    });
+    const [, appUser] = await prisma.$transaction([
+      prisma.signupdata.create({
+        data: {
+          user_id: userId,
+          email,
+          full_name: fullName,
+          google_id: googleId,
+          provider: "GOOGLE",
+          ip_address: ipAddress,
+          operating_system: operatingSystem,
+          device_type: deviceType,
+          device_name: deviceName,
+          browser,
+        },
+      }),
+
+      prisma.user.create({
+        data: {
+          user_id: userId,
+          fullName,
+          email,
+          photo: picture,
+          provider: "GOOGLE",
+          google_id: googleId,
+        },
+      }),
+    ]);
+
+    user = appUser;
 
     isNewUser = true;
-  } else if (!user.google_id) {
-    // Existing account (email/phone) — link their Google ID
-    user = await prisma.signupdata.update({
-      where: { user_id: user.user_id },
-      data: { google_id: googleId },
-    });
-  }
+  } else {
+  // Existing user - always sync latest Google data
+
+  const [, appUser] = await prisma.$transaction([
+    prisma.signupdata.update({
+      where: {
+        user_id: user.user_id,
+      },
+      data: {
+        google_id: googleId,
+        full_name: fullName,
+      },
+    }),
+
+    prisma.user.update({
+      where: {
+        user_id: user.user_id,
+      },
+      data: {
+        google_id: googleId,
+        fullName,
+        photo: picture,
+      },
+    }),
+  ]);
+
+  user = appUser;
+}
 
   const token = generateToken({
     userId: user.user_id,
@@ -104,8 +144,8 @@ const googleAuth = async ({
     user: {
       userId: user.user_id,
       email: user.email,
-      fullName: user.full_name,
-      picture,
+      fullName: user.fullName,
+      photo: user.photo,
     },
   };
 };

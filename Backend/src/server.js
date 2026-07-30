@@ -8,7 +8,7 @@ const PORT = 5000;
 
 //External Imported modules 
 const Authrouter = require("./modules/Authentication/auth.routes");
-
+const Profilerouter = require("./modules/Profile/profile.route")
 
 
 app.use(
@@ -23,6 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/auth", Authrouter);
+app.use("/profile", Profilerouter)
+
+
 app.get("/server", (req, res) => {
   res.send("Server is running 🚀");
 });
