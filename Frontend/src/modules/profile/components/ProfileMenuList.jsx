@@ -50,7 +50,8 @@ const ProfileMenuList = ({ onItemClick }) => {
                                 window.location.href = '/support';
 
                                 navigate('/support');
-
+                            } else if (item.id === 'settings') {
+                                navigate('/settings');
                             } else {
                                 onItemClick?.(item.id);
                             }
@@ -59,6 +60,9 @@ const ProfileMenuList = ({ onItemClick }) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                                 e.preventDefault();
                                 if (item.id === 'help') {
+                                    navigate('/support');
+                                } else if (item.id === 'settings') {
+                                    navigate('/settings');
                                     window.location.href = '/support';
                                 } else {
                                     onItemClick?.(item.id);

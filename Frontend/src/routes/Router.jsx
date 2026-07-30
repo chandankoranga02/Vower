@@ -10,6 +10,7 @@ import VehicleRegistration from "../modules/vehicle/vehicleRegistration";
 import VehicleProfilePage from "../modules/vehicle/vehicleProfile";
 import VehicleProfileDetails from "../modules/vehicle/vehicleProfiledetails";
 import SupportRoutes from "../modules/routes/SupportRoutes";
+import SettingsPage from "../modules/settings/SettingsPage";
 
 import Layout from "../layout";
 import PrivateRoute from "./PrivateRoute";
@@ -36,6 +37,7 @@ export default function Router() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<EditProfilePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           
           {/* Vehicle Routes */}
           <Route path="/vehicle-registration" element={<VehicleRegistration />} />
