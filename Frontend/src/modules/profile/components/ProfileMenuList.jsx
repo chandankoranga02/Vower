@@ -15,7 +15,7 @@ const menuItems = [
     { id: 'reservations', icon: CalendarDays, label: 'My Reservations' },
     { id: 'vehicle', icon: Car, label: 'My Vehicle' },
     { id: 'history', icon: Zap, label: 'Charging History' },
-    { id: 'help', icon: HelpCircle, label: 'Help' },
+    { id: 'help', icon: HelpCircle, label: 'Help & Support' },
     { id: 'privacy', icon: ShieldCheck, label: 'Privacy Policy' },
 ];
 
@@ -46,7 +46,12 @@ const ProfileMenuList = ({ onItemClick }) => {
                         onClick={(e) => {
                             handleRipple(e);
                             if (item.id === 'help') {
+
+                                window.location.href = '/support';
+
                                 navigate('/support');
+                            } else if (item.id === 'settings') {
+                                navigate('/settings');
                             } else {
                                 onItemClick?.(item.id);
                             }
@@ -54,7 +59,14 @@ const ProfileMenuList = ({ onItemClick }) => {
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                                 e.preventDefault();
-                                onItemClick?.(item.id);
+                                if (item.id === 'help') {
+                                    navigate('/support');
+                                } else if (item.id === 'settings') {
+                                    navigate('/settings');
+                                    window.location.href = '/support';
+                                } else {
+                                    onItemClick?.(item.id);
+                                }
                             }
                         }}
                     >

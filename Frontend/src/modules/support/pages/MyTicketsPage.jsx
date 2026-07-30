@@ -145,12 +145,14 @@ const MyTicketsPage = () => {
                         </div>
                         <h3 className="empty-title">No tickets found</h3>
                         <p className="empty-message">
+
                             {searchQuery || filter !== 'All'
                                 ? 'Try adjusting your search or filters'
                                 : "You haven't raised any tickets yet"}
                         </p>
                         {!searchQuery && filter === 'All' && (
                             <button
+
                                 className="raise-ticket-btn"
                                 onClick={() => navigate('/support/raise-ticket')}
                             >
@@ -167,9 +169,12 @@ const MyTicketsPage = () => {
                         >
                             <div className="ticket-card__header">
                                 <span className="ticket-id">{ticket.id}</span>
+
+
                                 <span
                                     className="ticket-status"
                                     style={{
+
                                         background: `${STATUS_COLORS[ticket.status]}20`,
                                         color: STATUS_COLORS[ticket.status]
                                     }}

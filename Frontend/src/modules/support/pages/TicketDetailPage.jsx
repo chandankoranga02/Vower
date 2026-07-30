@@ -57,9 +57,11 @@ const TicketDetailPage = () => {
                 {/* Status Header */}
                 <div className="status-header">
                     <span className="status-id">{MOCK_TICKET.id}</span>
-                    <span
+
+                    <span 
                         className="status-badge"
-                        style={{
+                        style={{ 
+
                             background: `${STATUS_COLORS[MOCK_TICKET.status]}20`,
                             color: STATUS_COLORS[MOCK_TICKET.status]
                         }}

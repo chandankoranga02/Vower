@@ -15,8 +15,14 @@ const ProfilePage = () => {
     };
 
     const handleMenuItemClick = (itemId) => {
-        // Future: navigate to sub-pages
-        console.log('Menu item tapped:', itemId);
+        if (itemId === 'settings') {
+            navigate('/settings');
+        } else if (itemId === 'help') {
+            navigate('/support');
+        } else {
+            // Future: navigate to other sub-pages
+            console.log('Menu item tapped:', itemId);
+        }
     };
 
     const handleTabChange = (tabId) => {

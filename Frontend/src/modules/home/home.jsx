@@ -25,7 +25,7 @@ const NEWSLETTER_SLIDES = [
   },
   { 
     id: 3, 
-    image: "https://imgs.search.brave.com/B6xEGwAkvdW-UShXY6c1VapokwItEUOtq3IEYKfQN_g/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTM0/ODYzMTAwNy9waG90/by9ldi1jaGFyZ2lu/Zy1zdGF0aW9uLWZv/ci1lbGVjdHJpYy1j/YXItaW4tY29uY2Vw/dC1vZi1ncmVlbi1l/bmVyZ3ktYW5kLWVj/by1wb3dlci5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9eVRM/OTVtQ1RQV1ROcUVP/NE5xaVdXU2VDX0pN/SU5OVUplQ2hFOWE2/WUtWYz0", 
+    image: "https://imgs.search.brave.com/B6xEGwAkvdW-UShXY6c1VapokwItEUOtq3IEYKfQN_g/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTM0/ODYzMTAwNy9waG90/by9ldi1jaGFyZ2lu/Zy1zdGF0aW9uLWZv/ci1lbGVjdHJpYy1j/YXItaW4tY29uY2Vw/dC1vZi1ncmVlbi1l/bmVyZ3ktYW5kLWVj/by1wb3dlci5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9eVRM/OTVtQ1RQV1ROcUVP/NENxaVdXU2VDX0pN/SU5OVUplQ2hFOWE2/WUtWYz0", 
     text: "Maximize Your Battery Life", 
     route: "/newsletter/3" 
   },
@@ -51,12 +51,27 @@ const NEWSLETTER_SLIDES = [
 
 export default function HomePage() {
   const [activeItem, setActiveItem] = useState("overview");
-  const sliderRef = useRef(null); // Reference to the scroll container
+  const sliderRef = useRef(null);
   const navigate = useNavigate();
+
+  // ---------------------------------------------------------------------------
+  // VEHICLE CHECK LOGIC
+  // Isse true/false toggle karke test kar sakte ho (Later: fetch from Redux/API)
+  // ---------------------------------------------------------------------------
+  const [hasRegisteredVehicle, setHasRegisteredVehicle] = useState(false);
 
   const handleNavigate = (routeKey, path) => {
     setActiveItem(routeKey);
     navigate(path);
+  };
+
+  // Specific Handler for Vehicle Card Click
+  const handleVehicleClick = () => {
+    if (hasRegisteredVehicle) {
+      handleNavigate("vehicle", "/vehicles"); // Registered profile screen
+    } else {
+      handleNavigate("vehicle", "/vehicle-registration"); // Registration form screen
+    }
   };
 
   // Auto-scroll logic
@@ -68,29 +83,24 @@ export default function HomePage() {
     
     const startTimer = () => {
       interval = setInterval(() => {
-        // Calculate max scrollable area
         const maxScroll = slider.scrollWidth - slider.clientWidth;
-        
-        // If at the end, jump back to start. Otherwise, scroll right by approx one slide.
         if (slider.scrollLeft >= maxScroll - 10) {
           slider.scrollTo({ left: 0, behavior: "smooth" });
         } else {
           slider.scrollBy({ left: slider.clientWidth * 0.85, behavior: "smooth" });
         }
-      }, 3500); // 3500ms = 3.5 seconds
+      }, 3500);
     };
 
     const stopTimer = () => clearInterval(interval);
 
     startTimer();
 
-    // Pause auto-scroll on interaction
     slider.addEventListener("mouseenter", stopTimer);
     slider.addEventListener("mouseleave", startTimer);
     slider.addEventListener("touchstart", stopTimer, { passive: true });
     slider.addEventListener("touchend", startTimer, { passive: true });
 
-    // Cleanup listeners on unmount
     return () => {
       stopTimer();
       slider.removeEventListener("mouseenter", stopTimer);
@@ -111,7 +121,7 @@ export default function HomePage() {
             label="Vehicle" 
             bgImage="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTssZdN1wDvbou0SfRVn4mTHNfp-Q9cdxq9FlMV7Rh2MQ&s=10"
             className="h-40 sm:h-52"
-            onClick={() => handleNavigate("vehicle", "/coming-soon")} 
+            onClick={handleVehicleClick} // <-- CHANGED HERE
           />
           <QuickAction 
             label="Session" 
@@ -153,7 +163,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* ROW 3 & 4: The 2x2 Grid (1st, 2nd, 3rd, 4th) */}
+        {/* ROW 3 & 4: The 2x2 Grid */}
         <div className="grid grid-cols-2 gap-4 sm:gap-6">
           <QuickAction 
             icon={Activity} 
