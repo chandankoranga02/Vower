@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Car,
   ChevronDown,
@@ -27,7 +28,9 @@ const POPULAR_MODELS = [
 const FUEL_TYPES = ["Electric", "Hybrid"];
 const CONNECTOR_TYPES = ["Type 2 (AC)", "CCS2 (DC)", "CHAdeMO", "GB/T"];
 
-export default function VehicleRegistration({ onSuccess, onCancel }) {
+export default function VehicleRegistration({ onSuccess, onCancel, hasRegisteredVehicle = false }) {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     vehicleType: "",
     brand: "",
@@ -46,6 +49,21 @@ export default function VehicleRegistration({ onSuccess, onCancel }) {
   const update = (key, value) => {
     setForm((f) => ({ ...f, [key]: value }));
     setError(""); // Clear error on edit
+  };
+
+  // SMART BACK BUTTON HANDLER
+  const handleBackToVehicleProfile = () => {
+    if (onCancel) {
+      onCancel();
+      return;
+    }
+
+    // Check if vehicle exists (Props ya LocalStorage ke trough)
+    if (!hasRegisteredVehicle) {
+      alert("No vehicle registered yet! Please fill in the details and save your vehicle first.");
+    } else {
+      navigate("/vehicles");
+    }
   };
 
   const handleSubmit = (e) => {
@@ -77,25 +95,29 @@ export default function VehicleRegistration({ onSuccess, onCancel }) {
       return;
     }
 
-    // Success - Pass data back to VehicleProfilePage
+    // Success - Pass data back to Parent Component
     const finalVehicle = {
       id: Date.now(),
       ...form,
       model: form.model === "Other" ? form.customModel : form.model,
     };
 
-    onSuccess(finalVehicle);
+    if (onSuccess) {
+      onSuccess(finalVehicle);
+    } else {
+      navigate("/vehicles");
+    }
   };
 
   return (
     <div className="w-full min-h-screen bg-white text-black px-4 py-6 max-w-md mx-auto">
-      {/* Top Back Button */}
+      {/* Top Back Button (UPDATED NAME & ALERT HANDLER) */}
       <button
         type="button"
-        onClick={onCancel}
-        className="flex items-center gap-1.5 text-xs font-semibold text-black/60 hover:text-black mb-4"
+        onClick={handleBackToVehicleProfile}
+        className="flex items-center gap-1.5 text-xs font-semibold text-black/60 hover:text-black mb-4 transition-colors"
       >
-        <ArrowLeft size={16} /> Back to Profile
+        <ArrowLeft size={16} /> Back to Vehicle Profile
       </button>
 
       <div className="mb-6">
