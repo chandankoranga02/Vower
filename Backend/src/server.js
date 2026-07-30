@@ -2,6 +2,9 @@ require("dotenv").config();
 // Package imported 
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+
+
 const prisma = require("./config/prisma");
 const app = express();
 const PORT = 5000;
@@ -17,7 +20,7 @@ app.use(
     credentials: true,
   }),
 );
-
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Settings,
     CalendarDays,
@@ -19,6 +20,7 @@ const menuItems = [
 ];
 
 const ProfileMenuList = ({ onItemClick }) => {
+    const navigate = useNavigate();
 
     const handleRipple = useCallback((e) => {
         const target = e.currentTarget;
@@ -44,7 +46,11 @@ const ProfileMenuList = ({ onItemClick }) => {
                         onClick={(e) => {
                             handleRipple(e);
                             if (item.id === 'help') {
+<<<<<<< HEAD
                                 window.location.href = '/support';
+=======
+                                navigate('/support');
+>>>>>>> 35caf03805ec471f37daa170367d396bccdb946b
                             } else {
                                 onItemClick?.(item.id);
                             }

@@ -7,7 +7,8 @@ datasource db {
 }
 
 model Signupdata {
-  user_id            Int          @id @default(autoincrement())
+  id                 BigInt   @id @default(autoincrement())
+  user_id            String @unique
   full_name          String?
   provider           AuthProvider
   email              String?      @unique
@@ -40,4 +41,275 @@ enum AuthProvider {
   EMAIL
   GOOGLE
   PHONE
+}
+
+model User {
+  id         BigInt       @id @default(autoincrement())
+  user_id    String       @unique
+
+  fullName   String       @db.VarChar(100)
+  email      String       @unique @db.VarChar(255)
+  phone      String?      @unique @db.VarChar(20)
+  photo      String?      @db.VarChar(500)
+
+  provider   AuthProvider
+  google_id  String?      @unique
+
+  dob         DateTime?
+  gender      Gender?
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  profile      UserProfile?
+  auth         UserAuth?
+  wallet       Wallet?
+  devices      UserDevice[]
+  ownedStations Station[]
+  vehicles     Vehicle[]
+
+  @@map("users")
+}
+
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+model UserProfile {
+  id                    BigInt   @id @default(autoincrement())
+
+  userId                BigInt  @unique
+
+  address               String?  @db.Text
+  city                  String?  @db.VarChar(100)
+  state                 String?  @db.VarChar(100)
+  country               String?  @db.VarChar(100)
+  pincode               String?  @db.VarChar(10)
+
+  language              String?  @default("English") @db.VarChar(30)
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model UserAuth {
+  id                    BigInt   @id @default(autoincrement())
+
+  userId                BigInt @unique
+
+  isEmailVerified       Boolean  @default(false)
+  isPhoneVerified       Boolean  @default(false)
+
+  isActive              Boolean  @default(true)
+
+  lastLogin             DateTime?
+  loginCount            Int      @default(0)
+
+  lastActivity          DateTime?
+
+  failedLoginAttempts   Int      @default(0)
+  accountLockedUntil    DateTime?
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_auth")
+}
+
+model UserDevice {
+  id                    BigInt   @id @default(autoincrement())
+
+  userId                BigInt 
+
+  deviceType            String?  @db.VarChar(50)
+  deviceName            String?  @db.VarChar(100)
+  operatingSystem       String?  @db.VarChar(100)
+
+  appVersion            String?  @db.VarChar(20)
+
+  ipAddress             String?  @db.VarChar(50)
+
+  lastLogin             DateTime?
+
+  createdAt             DateTime @default(now())
+
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+
+  @@map("user_devices")
+}
+
+model Wallet {
+  id                    BigInt   @id @default(autoincrement())
+
+  userId                BigInt   @unique
+
+  balance               Decimal  @default(0.00) @db.Decimal(10,2)
+  rewardPoints          Int      @default(0)
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("wallets")
+}
+
+model Vehicle {
+  id                      BigInt    @id @default(autoincrement())
+
+  userId                  BigInt
+
+  vehicleType             VehicleType
+  manufacturer            String    @db.VarChar(50)
+  vehicleModel            String    @db.VarChar(50)
+
+  registrationNumber      String    @unique @db.VarChar(20)
+
+  batteryCapacityKwh      Decimal?  @db.Decimal(5,2)
+
+  connectorType           ConnectorType
+
+  vinNumber               String?   @unique @db.VarChar(50)
+
+  fastChargingSupported   Boolean   @default(false)
+
+  maximumChargingPowerKw  Decimal?  @db.Decimal(5,2)
+
+  isDefault               Boolean   @default(false)
+
+  isActive                Boolean   @default(true)
+
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("vehicles")
+}
+
+enum VehicleType {
+  CAR
+  SCOOTER
+  BIKE
+  BUS
+  TRUCK
+}
+
+enum ConnectorType {
+  CCS1
+  CCS2
+  TYPE1
+  TYPE2
+  CHADEMO
+  GB_T
+  NACS
+}
+
+model Station {
+  id                BigInt      @id @default(autoincrement())
+  stationId         String      @unique
+
+  stationName       String      @db.VarChar(150)
+
+  ownerId BigInt?
+  owner User? @relation(fields: [ownerId], references: [id])
+
+  stationType       StationType
+
+  phone             String?     @db.VarChar(20)
+  email             String?     @db.VarChar(255)
+
+  address           String      @db.Text
+  city              String      @db.VarChar(100)
+  state             String      @db.VarChar(100)
+  country           String      @db.VarChar(100)
+  pincode           String?     @db.VarChar(10)
+
+  latitude          Decimal     @db.Decimal(10,8)
+  longitude         Decimal     @db.Decimal(11,8)
+
+  googlePlaceId     String?     @unique @db.VarChar(255)
+
+  averageRating     Decimal?    @default(0) @db.Decimal(2,1)
+  totalReviews      Int         @default(0)
+
+  openingTime       DateTime?
+  closingTime          DateTime?
+
+  is24x7            Boolean     @default(false)
+
+  status            StationStatus @default(ACTIVE)
+
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  ports             ChargingPort[]
+
+  @@index([city])
+  @@index([latitude, longitude])
+  @@index([status])
+  @@index([stationType])
+  @@map("stations")
+}
+
+
+model ChargingPort {
+  id                      BigInt      @id @default(autoincrement())
+
+  stationId               BigInt
+
+  portNumber              Int
+
+  connectorType           ConnectorType
+
+  maxPowerKw              Decimal     @db.Decimal(5,2)
+
+  currentStatus           PortStatus  @default(AVAILABLE)
+
+  isFastCharger           Boolean     @default(false)
+
+  pricePerKwh             Decimal     @db.Decimal(8,2)
+
+  createdAt               DateTime    @default(now())
+  updatedAt               DateTime    @updatedAt
+
+  station                 Station     @relation(fields: [stationId], references: [id], onDelete: Cascade)
+
+  @@index([stationId])
+
+  @@unique([stationId, portNumber])
+
+  @@map("charging_ports")
+}
+
+enum StationType {
+  PUBLIC
+  PRIVATE
+  CORPORATE
+}
+
+enum StationStatus {
+  ACTIVE
+  MAINTENANCE
+  CLOSED
+}
+
+enum PortStatus {
+  AVAILABLE
+  CHARGING
+  RESERVED
+  OFFLINE
 }

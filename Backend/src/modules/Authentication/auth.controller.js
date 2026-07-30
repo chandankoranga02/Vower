@@ -5,7 +5,7 @@ const loginPhoneService = require("./services/loginPhone.service");
 const sendOTPService = require("./services/sendOTP.service");
 const verifyOTPService = require("./services/verifyOTP.service");
 const googleAuthService = require("./services/googleOuath.service");
-const logoutService = require("./services/logout.service")
+
 
 const { getDeviceInfo } = require("../../utils/DeviceInfo");
 
@@ -21,10 +21,16 @@ const signUpEmail = async (req, res) => {
       ...deviceInfo,
     });
 
-    return res.status(result.code).json({
-      msg: result.msg,
-      token: result.token,
-    });
+    if (result.token) {
+      res.cookie("vower", result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+    }
+
+    return res.status(result.code).json({ msg: result.msg });
   } catch (error) {
     console.error("Email signup error:", error);
     return res.status(500).json({ msg: "Internal server error" });
@@ -60,10 +66,16 @@ const loginEmail = async (req, res) => {
       password,
     });
 
-    return res.status(result.code).json({
-      msg: result.msg,
-      token: result.token,
-    });
+    if (result.token) {
+      res.cookie("vower", result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+    }
+
+    return res.status(result.code).json({ msg: result.msg });
   } catch (error) {
     console.error("Email login error:", error);
     return res.status(500).json({ msg: "Internal server error" });
@@ -134,6 +146,13 @@ const googleAuth = async (req, res) => {
       ...deviceInfo,
     });
 
+    res.cookie("vower", result.token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     return res.status(result.code).json({
       msg: result.msg,
       token: result.token,
@@ -148,11 +167,16 @@ const googleAuth = async (req, res) => {
 };
 
 const logout = async (req, res) => {
+  res.clearCookie("vower", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+
   return res.status(200).json({
     msg: "Logged out successfully",
   });
 };
-
 
 module.exports = {
   logout,

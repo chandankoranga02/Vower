@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useGoogleAuth from './hooks/useGoogleAuth';
 import { AUTH_ENDPOINTS } from '../../apis/endpoints';
-import { setToken } from '../../utils/session';
+import { useAuth } from '../../context/AuthContext';
 
 const EyeIcon = ({ className = "w-5 h-5" }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -28,15 +28,17 @@ const GoogleIcon = () => (
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { checkAuth } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Google Authentication — calls backend, stores JWT, navigates to home
+
+  // Google Authentication — cookie set by backend, just navigate to home
   const googleLogin = useGoogleAuth({
-    onSuccess: ({ token }) => {
-      setToken(token);
+    onSuccess: () => {
+      checkAuth();
       navigate('/home', { replace: true });
     },
     onError: (errMsg) => {
@@ -57,6 +59,7 @@ export default function LoginPage() {
     try {
       const res = await fetch(AUTH_ENDPOINTS.LOGIN_EMAIL, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
@@ -68,7 +71,8 @@ export default function LoginPage() {
         return;
       }
 
-      setToken(data.token);
+      // Cookie is set by backend — refresh auth state then navigate
+      await checkAuth();
       navigate('/home', { replace: true });
     } catch {
       setError('Network error. Please try again.');
@@ -80,18 +84,18 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen w-full bg-[#F5F5F7] flex items-center justify-center p-4 sm:p-6 font-sans text-zinc-900 overflow-x-hidden">
       <div className="w-full max-w-sm flex flex-col items-center">
-        
+
         {/* LOGO & HEADING SECTION */}
         <div className="text-center pt-8 mb-6 flex flex-col items-center justify-center relative w-full">
-          <img 
-            src="/logo.jpeg" 
-            alt="Vower Logo" 
+          <img
+            src="/logo.jpeg"
+            alt="Vower Logo"
             className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-[2rem] shadow-lg z-10"
           />
           <div className="flex justify-center -mt-8 sm:-mt-10 z-20 pointer-events-none">
-            <img 
-              src="/WORDLOGON.png" 
-              alt="Vower Brand" 
+            <img
+              src="/WORDLOGON.png"
+              alt="Vower Brand"
               className="h-28 sm:h-36 w-auto object-contain drop-shadow-md"
             />
           </div>
@@ -129,8 +133,8 @@ export default function LoginPage() {
                 <label className="block text-xs font-semibold text-zinc-600">
                   Password
                 </label>
-                <Link 
-                  to="/forgot-password" 
+                <Link
+                  to="/forgot-password"
                   className="text-xs text-zinc-500 hover:text-black font-semibold transition-colors"
                 >
                   Forgot password?

@@ -1,0 +1,86 @@
+[33m4ce9e7c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m  Profile apis developed
+[33med8d9f0[m  registration of gaddi (#15)
+[33mda1afc8[m[33m ([m[1;31morigin/gadi-registration[m[33m)[m merge: resolve conflicts with upstream/main
+[33m2cc136e[m feat: update vehicle profile and add vehicle profile details page
+[33me8315a9[m Help ticket (#18)
+[33mcb745b3[m Merge pull request #6 from Lokesh-Samant/frontend-module-analysis-33c44
+[33m9a294e8[m Title: Create support routing module with dedicated pages and integrate into main router
+[33m9d665de[m  change domain in vower and integration of forget password apis successfully
+[33md908647[m gadi ka kaam pura
+[33m6172944[m  3rd apis fixed
+[33m4cb687c[m  registration of gaddi
+[33m4aeabed[m  image uploaded with relative
+[33mb9e9168[m  image uploaded
+[33m7257d94[m  named changed from index(1)  to index
+[33ma9f7f32[m  comming soon page
+[33meaba7e6[m  bug fixed 2
+[33m0c0a1ec[m  password reset async code fix
+[33m40d699c[m  password resert backend created
+[33ma616c0b[m  logout problem solved
+[33md222189[m  temporary logout
+[33m6b8e9ff[m  logout fucntionality added
+[33m94bfefe[m  fixed merged
+[33m0256826[m Fix SPA routing with Vercel rewrite
+[33m60454f8[m comming soon (#14)
+[33mc116d13[m  changed cors policy for development
+[33m22b0684[m[33m ([m[1;31morigin/feature-homepage[m[33m)[m Add routing: Home buttons to /coming-soon, Profile to /profile, Header & Footer navigation working
+[33mcbc841b[m comming soon
+[33m5764d7b[m Divyansh/header footer (#13)
+[33md14cfda[m Refactor Router component for improved structure
+[33m602e213[m Merge branch 'main' into Divyansh/Header_Footer
+[33m1fc0791[m Successfully added Header and Footer in all Pages and with a good home page
+[33mc40c12e[m Successfully added Header and Footer in all Pages and with a good home page
+[33mef2a51e[m  session and protected routes created
+[33m42db7b6[m  all authentication and google oauth is created
+[33me61aaed[m  send otp code upate dwith resent bug
+[33m2e9e7ac[m  SSL and TLS problem solved and adjustement made in Signup
+[33m41da0b8[m feat: update home page UI and route configurations (#12)
+[33md3b02c7[m Merge branch 'main' into feature-homepage
+[33m26df3e8[m first look to account profile page (#11)
+[33m2c9cc89[m  Singup with phone and otp delivery developed
+[33m5dfab6a[m Signup fucntion updated
+[33mdaf3586[m device issue bug fixed
+[33m2da5b4d[m Merge branch 'main' of https://github.com/chandankoranga02/Voltink
+[33m9a5aa34[m backend and authentication initialized
+[33me723b66[m feat: update home page UI and route configurations
+[33mc2b4fe6[m[33m ([m[1;31morigin/profilePage[m[33m)[m Merge branch 'main' into profilePage
+[33m267e6c9[m first look to account profile page
+[33m9cecb52[m updated login and forgot password component (#10)
+[33m0852edc[m[33m ([m[1;31morigin/frontend-Kaushik-login[m[33m)[m fix : latest feature
+[33mb5972aa[m updated login and forgot password component updates on latest changes
+[33m1e5280e[m  google client sdk error solved
+[33m8723f9a[m  google client id uploaded
+[33m12130d9[m Merge branch 'main' of https://github.com/chandankoranga02/Voltink
+[33m023ab0b[m  Routing and cotroller ready
+[33mf62a505[m Added Google Authentication to the site (#9)
+[33m31f245d[m Added Google Authentication to the site
+[33mae7c328[m  Login and forget password back problem solved
+[33m7c13efb[m  Email and phone theme and logo placed properly
+[33mca6cb56[m  saving my changes
+[33m2ae129c[m Lokesh signup (#7)
+[33m632975d[m fixed
+[33m6e794e4[m fixed
+[33m083c55e[m intial signup form (#6)
+[33m665ac8b[m Merge branch 'main' into lokesh-signup
+[33m1e3d6b8[m intial signup form
+[33m6973147[m Frontend kaushik login (#5)
+[33m12a0a90[m  latest code of login and forgetpasspage
+[33m8f7c29a[m Merge branch 'chandankoranga02:frontend-Kaushik-login' into frontend-Kaushik-login
+[33m0cb3a96[m late
+[33m4cfa343[m Added login and forgot password page
+[33m9e8d352[m  empty folder problem solved
+[33mbb86575[m  Logon updated and login page routing done
+[33m8e167b2[m Login page by chandan (#3)
+[33m1f8bd62[m  added login page and resolve conflicts
+[33m79ebe2d[m  android folder added
+[33m0d3de35[m  Mobile orinted login page (#1)
+[33m9211eeb[m  mobile login
+[33ma712e78[m  Mobile orinted login page
+[33m6998349[m  under development added
+[33m13015bb[m Merge branch 'main' of https://github.com/chandankoranga02/Voltink
+[33m0557133[m  under development screen
+[33m69431c1[m Update .gitignore to include .replit and Vite settings
+[33mbe47c1c[m Added a folder structure
+[33m9c99817[m Configure Replit environment settings
+[33m724640a[m basic project folder setuped
+[33m86d5a85[m first commit

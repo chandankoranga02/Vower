@@ -2,12 +2,7 @@ import { useEffect, useRef } from "react";
 import Google, { AUTH_ENDPOINTS } from "../../../apis/endpoints";
 
 /**
- * useGoogleAuth
- *
- * Wraps the Google Identity Services Token Client.
- * On success, sends the access_token to the backend /auth/google endpoint,
- * which verifies it, creates/finds the user in the DB, and returns a JWT.
- *
+
  * @param {function} onSuccess  Called with { token, user, msg } on successful auth
  * @param {function} onError    Called with an error message string on failure
  */
@@ -35,6 +30,7 @@ export default function useGoogleAuth({ onSuccess, onError }) {
           try {
             const res = await fetch(AUTH_ENDPOINTS.GOOGLE_AUTH, {
               method: "POST",
+              credentials: "include",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ accessToken: response.access_token }),
             });

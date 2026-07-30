@@ -12,39 +12,19 @@ import VehicleProfileDetails from "../modules/vehicle/vehicleProfiledetails";
 import SupportRoutes from "../modules/routes/SupportRoutes";
 
 import Layout from "../layout";
-
 import PrivateRoute from "./PrivateRoute";
-import { isAuthenticated } from "../utils/session";
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
-
-        {/* Redirect root */}
-        <Route
-          path="/"
-          element={
-            isAuthenticated() ? (
-              <Navigate to="/home" replace />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-
         {/* Public routes (No Header/Footer) */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/coming-soon" element={<CommingSoon />} />
-          
-        
-       
-         
-         
 
-        {/* Protected routes (With Header/Footer) */}
+        {/* Protected routes WITH Layout (Header / Footer included) */}
         <Route
           element={
             <PrivateRoute>
@@ -52,20 +32,29 @@ export default function Router() {
             </PrivateRoute>
           }
         >
-        
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<EditProfilePage />} />
-          <Route path="/home" element={<HomePage />} />
-            <Route path="/vehicle-registration" element={<VehicleRegistration />} />
+          
+          {/* Vehicle Routes */}
+          <Route path="/vehicle-registration" element={<VehicleRegistration />} />
           <Route path="/vehicles" element={<VehicleProfilePage />} />
           <Route path="/vehicle-D" element={<VehicleProfileDetails />} />
-        
-          <Route path="/support/*" element={<SupportRoutes />} />
         </Route>
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Support Routes WITHOUT main Layout (Dedicated Support Layout inside SupportRoutes) */}
+        <Route
+          path="/support/*"
+          element={
+            <PrivateRoute>
+              <SupportRoutes />
+            </PrivateRoute>
+          }
+        />
 
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );

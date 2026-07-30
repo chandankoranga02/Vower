@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useRef } from 'react';
+=======
+﻿import React, { useState, useRef } from 'react';
+>>>>>>> 35caf03805ec471f37daa170367d396bccdb946b
 import { useNavigate } from 'react-router-dom';
 import { Upload, X, Camera } from 'lucide-react';
 import './RaiseTicketPage.css';

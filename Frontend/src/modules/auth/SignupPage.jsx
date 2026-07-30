@@ -6,7 +6,6 @@ import SignupEmailPage from './components/SignupEmailForm.jsx'
 import PhoneForm from './components/PhoneForm.jsx'
 import OtpStep from './components/OtpStep.jsx'
 import useGoogleAuth from './hooks/useGoogleAuth'
-import { setToken } from '../../utils/session'
 
 export default function SignupPage() {
   const navigate = useNavigate()
@@ -16,10 +15,9 @@ export default function SignupPage() {
   const [emailSignupData, setEmailSignupData] = useState(null)
 
 
-  // Google Authentication
+  // Google Authentication — cookie set by backend, navigate on success
   const googleLogin = useGoogleAuth({
-    onSuccess: ({ token }) => {
-      setToken(token)
+    onSuccess: () => {
       navigate('/home', { replace: true })
     },
     onError: (error) => {
@@ -90,11 +88,8 @@ export default function SignupPage() {
               setStep('emailForm')
             }}
 
-            onVerified={(data) => {
-              console.log('Email signup completed:', data)
-
-              // Store JWT and go to home
-              setToken(data.token)
+            onVerified={() => {
+              console.log('Email signup completed — cookie set by backend')
               setEmailSignupData(null)
               navigate('/home', { replace: true })
             }}
@@ -109,9 +104,8 @@ export default function SignupPage() {
         return (
           <PhoneForm
             onBack={() => setStep('method')}
-            onSubmitted={({ phone: phoneNumber, token }) => {
-              // Phone signup completes in one step (no OTP) — store JWT and go home
-              setToken(token)
+            onSubmitted={({ phone: phoneNumber }) => {
+              // Phone signup — token returned in body (not changed to cookie)
               navigate('/home', { replace: true })
             }}
           />

@@ -25,12 +25,27 @@ const Header = () => {
     navigate(path);
   };
 
-  const logouthandler = () => {
-  alert("Logout Successfully");
-  localStorage.removeItem("vower_token");
-  navigate("/login");
+const logouthandler = async () => {
+  try {
+    const response = await fetch("http://localhost:5000/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
 
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log(data.msg);
+
+      alert("logout successfully")
+      window.location.href = "/login";
+    } else {
+      console.error(data.msg);
+    }
+  } catch (error) {
+    console.error("Logout failed:", error);
   }
+};
 
   const desktopMenuLinks = [
     { id: 1, label: "Admin Dashboard", path: "/coming-soon" },
