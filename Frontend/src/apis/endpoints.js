@@ -1,3 +1,5 @@
+import { LogOut } from "lucide-react";
+
 const Google = {
   CLIENT_ID: import.meta.env.VITE_GOOGLE_CLIENT_ID,
 };
@@ -15,6 +17,9 @@ export const AUTH_ENDPOINTS = {
   LOGIN_EMAIL: `${BASE_URL}/auth/login/email`,
   LOGIN_PHONE: `${BASE_URL}/auth/login/phone`,
   GOOGLE_AUTH: `${BASE_URL}/auth/google`,
+
+  // Logout 
+  LOGOUT : `${BASE_URL}/auth/logout`,
 
   // Reset Password
   SEND_RESET_PASSWORD_OTP: `${BASE_URL}/auth/reset-password/send-otp`,
