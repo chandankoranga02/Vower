@@ -27,7 +27,7 @@ const Header = () => {
 
 const logouthandler = async () => {
   try {
-    const response = await fetch("http://localhost:5000/auth/logout", {
+    const response = await fetch("https://vower-kappa.vercel.app/auth/logout", {
       method: "POST",
       credentials: "include",
     });
