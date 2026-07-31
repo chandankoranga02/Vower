@@ -6,7 +6,7 @@ const Controller = require("./station.controller")
 
 
 
-router.use(verifyJWT);
+// router.use(verifyJWT);
 
 
 

@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", Authrouter);
 app.use("/profile", Profilerouter)
-app.use("api/v1/stations", StationRouter)
+app.use("/api/v1/stations", StationRouter)
 
 
 app.get("/server", (req, res) => {
