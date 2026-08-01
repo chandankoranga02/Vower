@@ -51,6 +51,7 @@ export default function VehicleRegistration({ onSuccess, onCancel, hasRegistered
     setError(""); // Clear error on edit
   };
 
+
   // SMART BACK BUTTON HANDLER
   const handleBackToVehicleProfile = () => {
     if (onCancel) {
