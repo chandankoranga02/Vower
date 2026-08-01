@@ -46,9 +46,14 @@ const ProfileMenuList = ({ onItemClick }) => {
                         onClick={(e) => {
                             handleRipple(e);
                             if (item.id === 'help') {
+
+                                window.location.href = '/support';
+
                                 navigate('/support');
                             } else if (item.id === 'vehicle') {
                                 navigate('/vehicles');
+                            } else if (item.id === 'settings') {
+                                navigate('/settings');
                             } else {
                                 onItemClick?.(item.id);
                             }
@@ -60,6 +65,9 @@ const ProfileMenuList = ({ onItemClick }) => {
                                     navigate('/support');
                                 } else if (item.id === 'vehicle') {
                                     navigate('/vehicles');
+                                } else if (item.id === 'settings') {
+                                    navigate('/settings');
+                                    window.location.href = '/support';
                                 } else {
                                     onItemClick?.(item.id);
                                 }

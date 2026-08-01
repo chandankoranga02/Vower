@@ -11,7 +11,8 @@ const PORT = 5000;
 
 //External Imported modules 
 const Authrouter = require("./modules/Authentication/auth.routes");
-const Profilerouter = require("./modules/Profile/profile.route")
+const Profilerouter = require("./modules/Profile/profile.route");
+const StationRouter = require("./modules/station/station.route"  );
 
 
 app.use(
@@ -20,6 +21,7 @@ app.use(
     credentials: true,
   }),
 );
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -27,6 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", Authrouter);
 app.use("/profile", Profilerouter)
+app.use("/api/v1/stations", StationRouter)
 
 
 app.get("/server", (req, res) => {

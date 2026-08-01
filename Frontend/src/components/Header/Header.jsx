@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import logoImage from "/logo.jpeg";
 
+import { AUTH_ENDPOINTS } from "../../apis/endpoints";
+
 const Header = () => {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(false);
@@ -27,7 +29,7 @@ const Header = () => {
 
 const logouthandler = async () => {
   try {
-    const response = await fetch("http://localhost:5000/auth/logout", {
+    const response = await fetch(AUTH_ENDPOINTS.LOGOUT, {
       method: "POST",
       credentials: "include",
     });

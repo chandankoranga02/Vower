@@ -51,13 +51,20 @@ export default function VehicleRegistration({ onSuccess, onCancel, hasRegistered
     setError(""); // Clear error on edit
   };
 
-  // BACK BUTTON HANDLER — Always go to Vehicle Profile
+
+  // SMART BACK BUTTON HANDLER
   const handleBackToVehicleProfile = () => {
     if (onCancel) {
       onCancel();
       return;
     }
-    navigate("/vehicles");
+
+    // Check if vehicle exists (Props ya LocalStorage ke trough)
+    if (!hasRegisteredVehicle) {
+      alert("No vehicle registered yet! Please fill in the details and save your vehicle first.");
+    } else {
+      navigate("/vehicles");
+    }
   };
 
   const handleSubmit = (e) => {

@@ -16,46 +16,31 @@ target/
 .env.local
 .env.*
 
-# Editors
+# Editor/IDE files
 .vscode/
 .idea/
+*.swp
+*.swo
+*.tmp
 
-# Python
+# Logs
+*.log
+
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
-*.pyd
 
-# Coverage
+# Coverage reports
 coverage/
 htmlcov/
 .coverage
 
-# Compression
-*.zip
-*.gz
-*.tar
-*.tgz
-*.bz2
-*.xz
-*.7z
-*.rar
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
-
-# System
+# OS files
 .DS_Store
 Thumbs.db
+
+# Package manager
+package-lock.json
+yarn.lock
 ```
