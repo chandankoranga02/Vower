@@ -50,6 +50,8 @@ const ProfileMenuList = ({ onItemClick }) => {
                                 window.location.href = '/support';
 
                                 navigate('/support');
+                            } else if (item.id === 'vehicle') {
+                                navigate('/vehicles');
                             } else if (item.id === 'settings') {
                                 navigate('/settings');
                             } else {
@@ -61,6 +63,8 @@ const ProfileMenuList = ({ onItemClick }) => {
                                 e.preventDefault();
                                 if (item.id === 'help') {
                                     navigate('/support');
+                                } else if (item.id === 'vehicle') {
+                                    navigate('/vehicles');
                                 } else if (item.id === 'settings') {
                                     navigate('/settings');
                                     window.location.href = '/support';
