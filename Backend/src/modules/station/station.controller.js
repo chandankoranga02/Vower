@@ -1,4 +1,5 @@
 const NearByStationService = require("./Service/NearbyStation.service");
+const getStationService = require("./Service/SpecificStation.service")
 
 const nearby_station = async (req, res) => {
   try {
@@ -30,6 +31,30 @@ const nearby_station = async (req, res) => {
   }
 };
 
+const Specific_Station = async (req, res) =>{
+ try {
+    const { stationId } = req.params;
+
+    const result = await getStationService(stationId);
+
+    return res.status(200).json({
+      success: true,
+      message: "Station fetched successfully",
+      data: result,
+    });
+
+  } catch (error) {
+
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+
+  }
+}
+
+
 module.exports = {
   nearby_station,
+  Specific_Station
 };
